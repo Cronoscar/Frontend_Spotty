@@ -5,6 +5,7 @@ const RootLayout = () => {
 	return (
 		<Stack
 			screenOptions={{
+				/*
 				headerStyle: {
 					backgroundColor: "#275C9C",
 					flex: 1,
@@ -20,6 +21,8 @@ const RootLayout = () => {
 					paddingTop: 10,
 					backgroundColor: "#fff",
 				}
+				*/
+				headerShown: false,
 			}}
 		>
 			<Stack.Screen name="(tabs)" options={{ title: "Bienvenido" }} />

@@ -1,22 +1,21 @@
 import { View, FlatList, StyleSheet } from "react-native";
-import SpotItem from "./SpotItem";
+import BookingItem from "./BookingItem";
 
-const SpotList = ({ spots }) => {
+const BookingList = ({ bookings }) => {
 	return (
-		<View style={{ flex: 1, width: "95%", alignItems: "center" }}>
+		<View style={{ flex: 1, width: "90%", justifyContent: "center" }}>
 			<FlatList
 				contentContainerStyle={ styles.content }
-				data={ spots }
-				keyStractor={ ( spot ) => spot.id }
+				data={ bookings }
+				keyStractor={ ( booking ) => booking.id }
 				renderItem={({ item }) => (
-					<SpotItem
+					<BookingItem
 						title={ item.title }
+						state={ item.state }
 						location={ item.location }
-						freeSpots={ item.freeSpots }
-						distance={ item.distance }
-						stars={ item.stars }
+						date={ item.date }
+						time={ item.time }
 						price={ item.price }
-						image={ item.image }
 					/>
 				)}
 			/>
@@ -30,4 +29,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SpotList;
+export default BookingList;
