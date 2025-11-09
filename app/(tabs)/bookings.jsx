@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState, useEffect } from "react";
@@ -24,7 +24,7 @@ const examplePastBookings = [
     time: "07:30 AM - 10:30 AM",
     price: 50,
 	}
-]
+];
 
 const exampleBookings = [
   {
@@ -75,7 +75,7 @@ const exampleBookings = [
 ];
 
 
-const ToggleFilter = ({ selected, setSelected }) => {
+const ToggleFilter = ({ selected, setSelected, isLoading }) => {
 	return (
 		<View
 			style={ styles.filter }
@@ -83,7 +83,7 @@ const ToggleFilter = ({ selected, setSelected }) => {
 			<TouchableOpacity
 				accessibilityRole="radio"
 				accessibilityState={{ selected: selected === BookingFilter.ON_GOING }}
-				onPress={() => setSelected(BookingFilter.ON_GOING)}
+				onPress={() => !isLoading && setSelected(BookingFilter.ON_GOING)}
 				style={{
 					...styles.filterOption,
 					backgroundColor: selected === BookingFilter.ON_GOING ? "#fff" : "lightgray",
@@ -95,7 +95,7 @@ const ToggleFilter = ({ selected, setSelected }) => {
 			<TouchableOpacity
 				accessibilityRole="radio"
 				accessibilityState={{ selected: selected === BookingFilter.PAST }}
-				onPress={() => setSelected(BookingFilter.PAST)}
+				onPress={() => !isLoading && setSelected(BookingFilter.PAST)}
 				style={{
 					...styles.filterOption,
 					backgroundColor: selected === BookingFilter.PAST ? "#fff" : "lightgray",
@@ -109,26 +109,29 @@ const ToggleFilter = ({ selected, setSelected }) => {
 
 const BookingsScreen = () => {
 	const [bookings, setBookings] = useState([]);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState(BookingFilter.ON_GOING);
 
 	useEffect(() => {
-		setBookings(selected === BookingFilter.ON_GOING ? exampleBookings : examplePastBookings);
-		setLoading(false);
+		setLoading(true);
+		setTimeout(() => {
+			setBookings(selected === BookingFilter.ON_GOING ? exampleBookings : examplePastBookings);
+			setLoading(false);
+		}, 1000);
 	}, [selected]);
 
 	return (
 		<View style={{ flex: 1, backgroundColor: "#fff" }}>
 			<View style={ styles.header } >
-				<Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
+				<Text style={{ color: "#fff", fontSize: 30, fontWeight: "bold" }}>
 					Mis Reservaciones
 				</Text>
 			</View>
-			<ToggleFilter selected={ selected } setSelected={ setSelected }/>
+			<ToggleFilter selected={ selected } setSelected={ setSelected } isLoading={ loading }/>
 			<View style={ styles.container } >
 				{
 					loading
-						? <Text>Loading...</Text>
+						? <ActivityIndicator size='large' color='#275C9C' />
 						: <BookingList bookings={ bookings }/>
 				}
 			</View>
@@ -143,8 +146,9 @@ const styles = StyleSheet.create({
 		borderBottomRightRadius: 40,
 		paddingTop: 70,
 		paddingBottom: 16,
+		paddingHorizontal: 25,
 		alignItems: "center",
-		justifyContent: "center",
+		// justifyContent: "center",
 		flexDirection: "row",
 		gap: 10,
 	},

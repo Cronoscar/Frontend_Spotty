@@ -41,28 +41,30 @@ const ProfileScreen = () => {
 								</View>
 							</View>
 							{/* */}
-							<View style={ styles.userItems }>
-								<TouchableOpacity
-										style={ styles.userItem }
-										onPress={ () => {} }
-									>
-										<Text style={{ color: "#275C9C", fontSize: 15, fontWeight: "bold" }}>{ user.bookings }</Text>
-										<Text>Reservas</Text>
-								</TouchableOpacity>
-								<TouchableOpacity
-										style={ styles.userItem }
-										onPress={ () => {} }
-									>
-										<Text style={{ color: "#275C9C", fontSize: 15, fontWeight: "bold" }}>{ user.expenses }</Text>
-										<Text>Gastos</Text>
-								</TouchableOpacity>
-								<TouchableOpacity
-										style={ styles.userItem }
-										onPress={ () => {} }
-									>
-										<Text style={{ color: "#275C9C", fontSize: 15, fontWeight: "bold" }}>{ user.favorites }</Text>
-										<Text>Favoritos</Text>
-								</TouchableOpacity>
+							<View style={{ alignItems: "center" }}>
+								<View style={ styles.userItems }>
+									<TouchableOpacity
+											style={ styles.userItem }
+											onPress={ () => {} }
+										>
+											<Text style={ styles.userItemText }>{ user.bookings }</Text>
+											<Text style={{ fontSize: 12, }}>Reservas</Text>
+									</TouchableOpacity>
+									<TouchableOpacity
+											style={ styles.userItem }
+											onPress={ () => {} }
+										>
+											<Text style={ styles.userItemText }>L.{ user.expenses }</Text>
+											<Text style={{ fontSize: 12, }}>Gastos</Text>
+									</TouchableOpacity>
+									<TouchableOpacity
+											style={ styles.userItem }
+											onPress={ () => {} }
+										>
+											<Text style={ styles.userItemText }>{ user.favorites }</Text>
+											<Text style={{ fontSize: 12, }}>Favoritos</Text>
+									</TouchableOpacity>
+								</View>
 							</View>
 							{/* Opciones */}
 							<ScrollView
@@ -155,11 +157,12 @@ const styles = StyleSheet.create({
 		maxHeight: 100,
 	},
 	userItems: {
+		width: "90%",
 		marginVertical: 25,
 		flexDirection: "row",
-		justifyContent: "center",
 	},
 	userItem: {
+		flex: 1,
 		borderColor: "lightgray",
 		borderWidth: 1,
 		borderRadius: 15,
@@ -167,6 +170,11 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 20,
 		alignItems: "center",
+	},
+	userItemText: {
+		color: "#275C9C",
+		fontSize: 20,
+		fontWeight: "bold",
 	},
 	userOptions: {
 		alignItems: "center",

@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState, useEffect } from "react";
@@ -53,21 +53,23 @@ const HomeScreen = () => {
 	const [spots, setSpots] = useState([]);
 
 	useEffect(() => {
-		setSpots( exampleSpots );
-		setLoading(false);
+		setTimeout(() => {
+			setSpots( exampleSpots );
+			setLoading(false);
+		}, 3000);
 	}, []);
 
 	return (
 		<View style={{ flex: 1, backgroundColor: "#fff" }}>
 			<View style={ styles.header } >
-				<Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
+				<Text style={{ color: "#fff", fontSize: 30, fontWeight: "bold" }}>
 					Bienvenido
 				</Text>
 			</View>
 			<View style={ styles.container } >
 				{
 					loading
-						? <Text>Loading...</Text>
+						? <ActivityIndicator size='large' color='#275C9C' />
 						: <SpotList spots={ spots }/>
 				}
 			</View>
@@ -82,8 +84,9 @@ const styles = StyleSheet.create({
 		borderBottomRightRadius: 40,
 		paddingTop: 70,
 		paddingBottom: 16,
+		paddingHorizontal: 25,
 		alignItems: "center",
-		justifyContent: "center",
+		// justifyContent: "center",
 		flexDirection: "row",
 		gap: 10,
 	},

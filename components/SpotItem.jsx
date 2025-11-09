@@ -29,7 +29,7 @@ const SpotItem = ({ title, location, freeSpots, distance, stars, price, image })
 					marginBottom: 7,
 				}}
 			>
-				<Text style={ styles.spotTitle }>{ title }</Text>
+				<Text style={ styles.spotTitle }>{ title.length > 15 ? title.substring(0, 15) + "..." : title }</Text>
 				<View
 					style={{
 						flexDirection: "row",
