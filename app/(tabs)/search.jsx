@@ -110,12 +110,11 @@ const exampleSpots = [
 
 
 const SearchScreen = () => {
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [searchBox, setSearchBox] = useState("");
 	const [spots, setSpots] = useState([]);
 
 	useEffect(() => {
-		setLoading(true);
 		setTimeout(() => {
 			setLoading(false);
 		}, 3000);
@@ -123,6 +122,11 @@ const SearchScreen = () => {
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
+			if (!searchBox) {
+				setSpots([]);
+				return;
+			}
+
 			setLoading(true);
 			setSpots(exampleSpots.filter(spot => new RegExp(`.*${searchBox}.*`, "i").test(spot.title)));
 		}, 500);

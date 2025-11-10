@@ -1,8 +1,7 @@
 import { Text, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState, useEffect } from "react";
-import { BookingFilter } from "@/config.js";
+import { BookingFilter } from "@/config/enums.js";
 import BookingList from "@/components/BookingList";
 
 const examplePastBookings = [
