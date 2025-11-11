@@ -10,10 +10,8 @@ const UserOptions = () => {
 	const handleLogout = async () => {
 		const res = await logout();
 
-		console.log(res)
-
 		if (res?.ok) {
-			router.replace("/(tabs)/");
+			router.replace("/");
 		} else {
 			Alert.alert("Error cerrando sesión", "Inténtelo nuevamente.");
 		}

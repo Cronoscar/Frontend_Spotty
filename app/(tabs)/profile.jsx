@@ -16,10 +16,11 @@ const ProfileScreen = () => {
 
 	useEffect(() => {
 		const getUserDetails = async () => {
+			console.log(session);
 			const response = await UserService.getUser( session?.id );
 
 			if (response?.error) {
-				router.push("/auth");
+				router.replace("/auth");
 				return;
 			}
 
@@ -28,7 +29,7 @@ const ProfileScreen = () => {
 		};
 
 		if (!loadingSession && !session) {
-			router.push("/auth");
+			router.replace("/auth");
 			return;
 		}
 

@@ -1,17 +1,31 @@
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet, Alert, BackHandler } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { Form } from "@/config/enums";
+import RegisterForm from "@/components/RegisterForm";
+import LoginForm from "@/components/LoginForm";
 
 const AuthScreen = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [form, setForm] = useState(Form.REGISTER);
 	const router = useRouter();
-
 	const { session, login } = useAuth();
+
+	useEffect(() => {
+		const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+			router.replace("/");
+			return true;
+		});
+		return () => backHandler.remove();
+	}, []);
+
+	const handleRegister = async () => {
+	};
 
 	const handleAuth = async () => {
 		if (loading) {
@@ -43,55 +57,46 @@ const AuthScreen = () => {
 	return (
 		<View style={{ flex: 1, backgroundColor: "#fff" }}>
 			<View style={ styles.header }>
+				<TouchableOpacity
+					onPress={() => router.replace("/")}
+				>
+					<Ionicons name="arrow-back-circle-outline" color="#fff" size={ 35 } />
+				</TouchableOpacity>
 				<Text style={{ color: "#fff", fontSize: 30, fontWeight: "bold" }}>
-					Inicia sesión
+					{
+						form == Form.LOGIN
+							? "Inicia sesión"
+							: "Regístrate"
+					}
 				</Text>
 			</View>
 			<View style={ styles.container }>
-				<View style={{ height: 50, }}>
+				<View style={ styles.form }>
 					{
-						error && (
-							<Text
-								style={{
-									backgroundColor: "red",
-									color: "pink",
-									paddingVertical: 5,
-									paddingHorizontal: 20,
-									borderRadius: 10,
-									fontSize: 15,
-									marginBottom: 10,
-								}}
-							>
-								{ error }
-							</Text>
-						)
+						form == Form.LOGIN
+							? (
+								<LoginForm
+									email = { email }
+									setEmail = { setEmail }
+									password = { password }
+									setPassword = { setPassword }
+									handleAuth={ handleAuth }
+									setForm={ setForm }
+								/>
+							) : (
+								<RegisterForm
+									email = { email }
+									setEmail = { setEmail }
+									password = { password }
+									setPassword = { setPassword }
+									handleRegister={ handleRegister }
+									setForm={ setForm }
+								/>
+							)
 					}
 				</View>
-				<View style={ styles.form }>
-					<Text style={ styles.label }>Correo electrónico</Text>
-					<TextInput
-						placeholder="correo@abc.com"
-						keyboardType="email-address"
-						autoCapitalize="none"
-						value={email}
-						onChangeText={setEmail}
-						style={ styles.input }
-					/>
-					<Text style={ styles.label }>Contraseña</Text>
-					<TextInput
-						placeholder="Contraseña"
-						secureTextEntry
-						autoCapitalize="none"
-						value={password}
-						onChangeText={setPassword}
-						style={ styles.input }
-					/>
-					<TouchableOpacity
-						style={ styles.button }
-						onPress={handleAuth}
-					>
-						<Text style={ styles.buttonText }>Iniciar sesion</Text>
-					</TouchableOpacity>
+				<View style={{ height: 50, }}>
+					{ error && <Text style={ styles.error }>{ error }</Text> }
 				</View>
 			</View>
 		</View>
@@ -118,27 +123,12 @@ const styles = StyleSheet.create({
 	form: {
 		width: "70%",
 	},
-	input: {
+	error: {
+		backgroundColor: "red",
+		color: "pink",
+		paddingVertical: 10,
+		paddingHorizontal: 20,
 		borderRadius: 10,
-		borderColor: "lightgray",
-		borderWidth: 1,
-		marginBottom: 10,
-		paddingHorizontal: 10,
-		paddingVertical: 5,
-	},
-	button: {
-		borderRadius: 10,
-		backgroundColor: "#275C9C",
-		paddingVertical: 4,
-		paddingHorizontal: 6,
-		alignItems: "center",
-	},
-	buttonText: {
-		fontSize: 15,
-		fontWeight: "bold",
-		color: "#fff",
-	},
-	label: {
 		fontSize: 15,
 		fontWeight: "bold",
 	}
