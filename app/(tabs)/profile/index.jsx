@@ -14,9 +14,8 @@ const ProfileScreen = () => {
 	const router = useRouter();
 	const { session, loadingSession } = useAuth();
 
-	useEffect(() => {
-		const getUserDetails = async () => {
-			console.log(session);
+	useEffect(function() {
+		async function getUserDetails() {
 			const response = await UserService.getUser( session?.id );
 
 			if (response?.error) {
@@ -107,7 +106,7 @@ const ProfileScreen = () => {
 										marginVertical: 15,
 									}}
 								>
-									<ActivityIndicator size='large' color='#275C9C' />
+									<ActivityIndicator size="large" color="#275C9C" />
 								</View>
 							)
 					}

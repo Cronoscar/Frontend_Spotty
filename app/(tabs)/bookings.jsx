@@ -73,39 +73,6 @@ const exampleBookings = [
   },
 ];
 
-
-const ToggleFilter = ({ selected, setSelected, isLoading }) => {
-	return (
-		<View
-			style={ styles.filter }
-		>
-			<TouchableOpacity
-				accessibilityRole="radio"
-				accessibilityState={{ selected: selected === BookingFilter.ON_GOING }}
-				onPress={() => !isLoading && setSelected(BookingFilter.ON_GOING)}
-				style={{
-					...styles.filterOption,
-					backgroundColor: selected === BookingFilter.ON_GOING ? "#fff" : "lightgray",
-				}}
-			>
-				<Text>En curso</Text>
-			</TouchableOpacity>
-
-			<TouchableOpacity
-				accessibilityRole="radio"
-				accessibilityState={{ selected: selected === BookingFilter.PAST }}
-				onPress={() => !isLoading && setSelected(BookingFilter.PAST)}
-				style={{
-					...styles.filterOption,
-					backgroundColor: selected === BookingFilter.PAST ? "#fff" : "lightgray",
-				}}
-			>
-				<Text>Pasados</Text>
-			</TouchableOpacity>
-		</View>
-	);
-}
-
 const BookingsScreen = () => {
 	const [bookings, setBookings] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -137,6 +104,38 @@ const BookingsScreen = () => {
 		</View>
 	);
 };
+
+function ToggleFilter({ selected, setSelected, isLoading }) {
+	return (
+		<View
+			style={ styles.filter }
+		>
+			<TouchableOpacity
+				accessibilityRole="radio"
+				accessibilityState={{ selected: selected === BookingFilter.ON_GOING }}
+				onPress={() => !isLoading && setSelected(BookingFilter.ON_GOING)}
+				style={{
+					...styles.filterOption,
+					backgroundColor: selected === BookingFilter.ON_GOING ? "#fff" : "lightgray",
+				}}
+			>
+				<Text>En curso</Text>
+			</TouchableOpacity>
+
+			<TouchableOpacity
+				accessibilityRole="radio"
+				accessibilityState={{ selected: selected === BookingFilter.PAST }}
+				onPress={() => !isLoading && setSelected(BookingFilter.PAST)}
+				style={{
+					...styles.filterOption,
+					backgroundColor: selected === BookingFilter.PAST ? "#fff" : "lightgray",
+				}}
+			>
+				<Text>Pasados</Text>
+			</TouchableOpacity>
+		</View>
+	);
+}
 
 const styles = StyleSheet.create({
 	header: {

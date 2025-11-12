@@ -1,58 +1,72 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { Form } from "@/config/enums";
+import { useAuth } from "@/contexts/AuthContext";
+import { useState, useEffect } from "react";
+import { useRouter } from "expo-router";
 
-const RegisterForm = ({ email, setEmail, password, setPassword, handleRegister, setForm }) => (
-	<>
-		<Text style={ styles.label }>Nombre</Text>
-		<TextInput
-			placeholder="Nombre"
-			autoCapitalize="none"
-			value={ null }
-			onChangeText={ null }
-			style={ styles.input }
-		/>
-		<Text style={ styles.label }>Correo electrónico</Text>
-		<TextInput
-			placeholder="correo@abc.com"
-			keyboardType="email-address"
-			autoCapitalize="none"
-			value={ email }
-			onChangeText={ setEmail }
-			style={ styles.input }
-		/>
-		<Text style={ styles.label }>Contraseña</Text>
-		<TextInput
-			placeholder="Contraseña"
-			secureTextEntry
-			autoCapitalize="none"
-			value={ password }
-			onChangeText={ setPassword }
-			style={ styles.input }
-		/>
-		<View
-			style={{
-				alignItems: "center",
-				justifyContent: "center",
-				marginTop: 10,
-			}}
-		>
-			<TouchableOpacity
-				style={ styles.button }
-				onPress={ handleRegister }
-			>
-				<Text style={ styles.buttonText }>Registrarse</Text>
-			</TouchableOpacity>
-			<Text
-				onPress={ () => setForm(Form.LOGIN) }
+export default function RegisterForm({ setError, setForm }) {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
+	const { session, login } = useAuth();
+	const router = useRouter();
+
+	async function handleRegister() {
+	}
+
+	return (
+		<>
+			<Text style={ styles.label }>Nombre</Text>
+			<TextInput
+				placeholder="Nombre"
+				autoCapitalize="none"
+				value={ null }
+				onChangeText={ null }
+				style={ styles.input }
+			/>
+			<Text style={ styles.label }>Correo electrónico</Text>
+			<TextInput
+				placeholder="correo@abc.com"
+				keyboardType="email-address"
+				autoCapitalize="none"
+				value={ email }
+				onChangeText={ setEmail }
+				style={ styles.input }
+			/>
+			<Text style={ styles.label }>Contraseña</Text>
+			<TextInput
+				placeholder="Contraseña"
+				secureTextEntry
+				autoCapitalize="none"
+				value={ password }
+				onChangeText={ setPassword }
+				style={ styles.input }
+			/>
+			<View
 				style={{
-					marginTop: 15
+					alignItems: "center",
+					justifyContent: "center",
+					marginTop: 10,
 				}}
 			>
-				¿Ya tienes cuenta? <Text style={{ fontWeight: "bold", color: "#275C9C" }}>¡Inicia sesión!</Text>
-			</Text>
-		</View>
-	</>
-);
+				<TouchableOpacity
+					style={ styles.button }
+					onPress={ handleRegister }
+				>
+					<Text style={ styles.buttonText }>Registrarse</Text>
+				</TouchableOpacity>
+				<Text
+					onPress={ () => setForm(Form.LOGIN) }
+					style={{
+						marginVertical: 15
+					}}
+				>
+					¿Ya tienes cuenta? <Text style={{ fontWeight: "bold", color: "#275C9C" }}>¡Inicia sesión!</Text>
+				</Text>
+			</View>
+		</>
+	);
+}
 
 const styles = StyleSheet.create({
 	input: {
@@ -81,5 +95,3 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 });
-
-export default RegisterForm;

@@ -18,12 +18,10 @@ const UserOptions = () => {
 	};
 
 	return (
-		<ScrollView
-			contentContainerStyle={ styles.userOptions }
-		>
+		<ScrollView contentContainerStyle={ styles.userOptions }>
 			<TouchableOpacity
 					style={ styles.userOption }
-					onPress={ () => {} }
+					onPress={ () => { router.push("/profile/edit") } }
 				>
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
 						<Ionicons name="person-outline" color="#275C9C" size={ 20 } />
@@ -34,7 +32,7 @@ const UserOptions = () => {
 
 			<TouchableOpacity
 					style={ styles.userOption }
-					onPress={ () => {} }
+					onPress={ () => { router.push("/profile/payment_methods") } }
 				>
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
 						<Ionicons name="card-outline" color="#275C9C" size={ 20 } />
