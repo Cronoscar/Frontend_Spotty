@@ -10,6 +10,7 @@ const SpotList = ({ spots }) => {
 				keyStractor={ ( spot ) => spot.id }
 				renderItem={({ item }) => (
 					<SpotItem
+						id={ item.id }
 						title={ item.title }
 						location={ item.location }
 						freeSpots={ item.freeSpots }

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet, Alert, BackHandler } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet, Alert, BackHandler, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
@@ -32,13 +32,13 @@ const AuthScreen = () => {
 				backAction={ () => router.replace("/") }
 			/>
 			<View style={ styles.container }>
-				<View style={ styles.form }>
+				<ScrollView contentContainerStyle={ styles.form }>
 					{
 						form == Form.LOGIN
 							? <LoginForm setError={ setError } setForm={ setForm }/>
 							: <RegisterForm setError={ setError } setForm={ setForm }/>
 					}
-				</View>
+				</ScrollView>
 				<View style={{ height: 50, }}>
 					{ error && <Text style={ styles.error }>{ error }</Text> }
 				</View>
@@ -50,8 +50,9 @@ const AuthScreen = () => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: "center",
 		justifyContent: "center",
+		width: "70%",
+		alignSelf: "center",
 	},
 	header: {
 		backgroundColor: "#275C9C",
@@ -65,7 +66,8 @@ const styles = StyleSheet.create({
 		gap: 10,
 	},
 	form: {
-		width: "70%",
+		marginVertical: "auto",
+		padding: 10,
 	},
 	error: {
 		backgroundColor: "red",

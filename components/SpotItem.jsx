@@ -1,13 +1,43 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, useWindowDimensions } from "react-native";
-import SpotImage from "@/assets/images/333.jpg"
+import { Pressable, View, Text, StyleSheet, Image, TouchableOpacity, useWindowDimensions, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
-const SpotItem = ({ title, location, freeSpots, distance, stars, price, image }) => {
+import SpotImage from "@/assets/images/333.jpg"
+
+export default function SpotItem({
+	id,
+	title,
+	location,
+	freeSpots,
+	distance,
+	stars,
+	price,
+	image
+}) {
 	const { width, height } = useWindowDimensions();
+	const router = useRouter();
+
 	return (
-		<View style={ { ...styles.spotItem, width: width * 0.8 } }>
-			<View style={ { ...styles.spotHeader, height: height * 0.15 } }>
-				<Image source={ SpotImage } style={ { ...styles.spotImage, maxHeight: height * 0.15 } } />
+		<Pressable
+			onPress={ () => router.push(`/spotDetails?id=${ id }`) }
+			style={{
+				...styles.spotItem,
+				width: width * 0.8
+			}}
+		>
+			<View
+				style={{
+					...styles.spotHeader,
+					height: height * 0.15
+				}}
+			>
+				<Image
+					source={ SpotImage }
+					style={{
+						...styles.spotImage,
+						maxHeight: height * 0.15
+					}}
+				/>
 				<Text style={ styles.spotPrice }>L.{ price }/hr</Text>
 				<Ionicons
 					name="heart-outline"
@@ -48,7 +78,7 @@ const SpotItem = ({ title, location, freeSpots, distance, stars, price, image })
 					marginBottom: 7,
 				}}
 			>
-				<Ionicons name="location-outline" size={13} color="gray" />
+				<Ionicons name="location-outline" size={ 13 } color="gray" />
 				<Text style={ styles.spotLocation }>{ location } </Text>
 				<Ionicons name="ellipse" size={5} color="gray" />
 				<Text style={ styles.spotDistance }> { distance } km</Text>
@@ -65,12 +95,12 @@ const SpotItem = ({ title, location, freeSpots, distance, stars, price, image })
 				<Text style={ styles.spotFreeSpots }>{ freeSpots } espacios disponibles</Text>
 				<TouchableOpacity
 					style={ styles.button }
-					onPress={() => router.push("/") }
+					onPress={() => Alert.alert() }
 				>
 					<Text style={ styles.buttonText }>Reservar</Text>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</Pressable>
 	);
 };
 
@@ -79,7 +109,6 @@ const styles = StyleSheet.create({
 		/* flexDirection: "row",*/
 		justifyContent: "space-between",
 		backgroundColor: "#f5f5f5",
-		borderRadius: 5,
 		borderRadius: 5,
 		marginBottom: 20,
 		shadowColor: "#000",
@@ -142,5 +171,3 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 });
-
-export default SpotItem;
