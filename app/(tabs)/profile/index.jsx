@@ -1,41 +1,33 @@
 import { Text, ScrollView, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Placeholder, PlaceholderMedia, PlaceholderLine, Fade } from "rn-placeholder";
 import { useRouter } from "expo-router";
 import { useAuth } from '@/contexts/AuthContext';
-import UserService from "@/services/UserService";
 import UserOptions from "@/components/UserOptions.jsx";
+import { useAuthStatus } from "@/hooks/useAuthStatus";
+
+import UserService from "@/services/UserService";
 
 import ProfilePicture from "@/assets/images/333.jpg";
 
-const ProfileScreen = () => {
+export default function() {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const router = useRouter();
 	const { session, loadingSession } = useAuth();
 
-	useEffect(function() {
-		async function getUserDetails() {
-			const response = await UserService.getUser( session?.id );
+	useAuthStatus(async function() {
+		const response = await UserService.getUser( session?.id );
 
-			if (response?.error) {
-				router.replace("/auth");
-				return;
-			}
-
-			setUser(response);
-			setLoading(false);
-		};
-
-		if (!loadingSession && !session) {
+		if (response?.error) {
 			router.replace("/auth");
 			return;
 		}
 
-		if (!loadingSession && session) {
-			getUserDetails();
-		}
-	}, [loadingSession, session]);
+		setUser(response);
+
+		setLoading(false);
+	});
 
 	return (
 		<View style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -44,7 +36,7 @@ const ProfileScreen = () => {
 				<Text style={{ color: "#fff", fontSize: 30, fontWeight: "bold" }}>Perfil</Text>
 				<View style={ styles.userInfo }>
 					{
-						!loading && !loadingSession && user
+						!loading
 							? (
 								<>
 									<Image source={ ProfilePicture } style={ styles.userImage } />
@@ -72,7 +64,7 @@ const ProfileScreen = () => {
 			<View style={{ alignItems: "center" }}>
 				<View style={ styles.userItems }>
 					{
-						!loading && !loadingSession && user
+						!loading
 							? (
 								<>
 									<TouchableOpacity
@@ -162,5 +154,3 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 });
-
-export default ProfileScreen;

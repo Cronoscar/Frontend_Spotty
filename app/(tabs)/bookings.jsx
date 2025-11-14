@@ -3,88 +3,36 @@ import { useRouter } from "expo-router";
 import { useState, useEffect } from "react";
 import { BookingFilter } from "@/config/enums.js";
 import BookingList from "@/components/BookingList";
+import { useAuth } from '@/contexts/AuthContext';
+import { useAuthStatus } from "@/hooks/useAuthStatus";
 
-const examplePastBookings = [
-	{
-    id: 1,
-    title: "Reserva pasada 1",
-    state: "Confirmado",
-    location: "Av. Los Próceres #45, Tegucigalpa",
-    date: "2025-11-09",
-    time: "07:30 AM - 10:30 AM",
-    price: 50,
-	},
-	{
-    id: 2,
-    title: "Reserva pasada 2",
-    state: "Confirmado",
-    location: "Av. Los Próceres #45, Tegucigalpa",
-    date: "2025-11-09",
-    time: "07:30 AM - 10:30 AM",
-    price: 50,
-	}
-];
-
-const exampleBookings = [
-  {
-    id: 1,
-    title: "Parqueo Central",
-    state: "Confirmado",
-    location: "Av. Los Próceres #45, Tegucigalpa",
-    date: "2025-11-09",
-    time: "07:30 AM - 10:30 AM",
-    price: 50,
-  },
-  {
-    id: 2,
-    title: "Parking Mall Multiplaza",
-    state: "Confirmado",
-    location: "Boulevard Suyapa, Tegucigalpa",
-    date: "2025-11-10",
-    time: "09:00 AM - 09:00 AM",
-    price: 80,
-  },
-  {
-    id: 3,
-    title: "Parqueo Zona Viva",
-    state: "Confirmado",
-    location: "Col. Palmira, Calle 8",
-    date: "2025-11-05",
-    time: "06:15 PM - 09:00 AM",
-    price: 60,
-  },
-  {
-    id: 4,
-    title: "Parking Aeropuerto Toncontín",
-    state: "Confirmado",
-    location: "Carretera al Sur",
-    date: "2025-11-01",
-    time: "11:45 AM - 09:00 AM",
-    price: 100,
-  },
-  {
-    id: 5,
-    title: "Parqueo Estadio Nacional",
-    state: "Confirmado",
-    location: "Boulevard Morazán",
-    date: "2025-11-12",
-    time: "04:00 PM - 09:00 AM",
-    price: 75,
-  },
-];
+import BookingService from "@/services/BookingService";
 
 const BookingsScreen = () => {
 	const [bookings, setBookings] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [selected, setSelected] = useState(BookingFilter.ON_GOING);
+	const [filter, setFilter] = useState(BookingFilter.ON_GOING);
+	const { session } = useAuth();
 
-	useEffect(() => {
-		setLoading(true);
-		setTimeout(() => {
-			setBookings(selected === BookingFilter.ON_GOING ? exampleBookings : examplePastBookings);
+	useAuthStatus();
+
+	useEffect(function() {
+		async function getBookings() {
+			const response = await BookingService.getUserBookings( session?.id, filter );
+
 			setLoading(false);
-		}, 1000);
-	}, [selected]);
+
+			if (response?.error) {
+				Alert.alert("Error obteniendo reservaciones", "Por favor, inténtelo más tarde");
+				return;
+			}
+
+			setBookings(response.data);
+		};
+
+		setLoading(true);
+		getBookings();
+	}, [filter]);
 
 	return (
 		<View style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -93,7 +41,7 @@ const BookingsScreen = () => {
 					Mis Reservaciones
 				</Text>
 			</View>
-			<ToggleFilter selected={ selected } setSelected={ setSelected } isLoading={ loading }/>
+			<ToggleFilter filter={ filter } setFilter={ setFilter } isLoading={ loading }/>
 			<View style={ styles.container } >
 				{
 					loading
@@ -105,18 +53,18 @@ const BookingsScreen = () => {
 	);
 };
 
-function ToggleFilter({ selected, setSelected, isLoading }) {
+function ToggleFilter({ filter, setFilter, isLoading }) {
 	return (
 		<View
 			style={ styles.filter }
 		>
 			<TouchableOpacity
 				accessibilityRole="radio"
-				accessibilityState={{ selected: selected === BookingFilter.ON_GOING }}
-				onPress={() => !isLoading && setSelected(BookingFilter.ON_GOING)}
+				accessibilityState={{ filter: filter === BookingFilter.ON_GOING }}
+				onPress={() => !isLoading && setFilter(BookingFilter.ON_GOING)}
 				style={{
 					...styles.filterOption,
-					backgroundColor: selected === BookingFilter.ON_GOING ? "#fff" : "lightgray",
+					backgroundColor: filter === BookingFilter.ON_GOING ? "#fff" : "lightgray",
 				}}
 			>
 				<Text>En curso</Text>
@@ -124,11 +72,11 @@ function ToggleFilter({ selected, setSelected, isLoading }) {
 
 			<TouchableOpacity
 				accessibilityRole="radio"
-				accessibilityState={{ selected: selected === BookingFilter.PAST }}
-				onPress={() => !isLoading && setSelected(BookingFilter.PAST)}
+				accessibilityState={{ filter: filter === BookingFilter.PAST }}
+				onPress={() => !isLoading && setFilter(BookingFilter.PAST)}
 				style={{
 					...styles.filterOption,
-					backgroundColor: selected === BookingFilter.PAST ? "#fff" : "lightgray",
+					backgroundColor: filter === BookingFilter.PAST ? "#fff" : "lightgray",
 				}}
 			>
 				<Text>Pasados</Text>

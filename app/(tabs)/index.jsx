@@ -1,6 +1,5 @@
 import { Text, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { useState, useEffect } from "react";
 
 import SpotList from "@/components/SpotList";
@@ -69,7 +68,7 @@ const HomeScreen = () => {
 			<View style={ styles.container } >
 				{
 					loading
-						? <ActivityIndicator size='large' color='#275C9C' />
+						? <ActivityIndicator size="large" color="#275C9C" />
 						: <SpotList spots={ spots }/>
 				}
 			</View>
