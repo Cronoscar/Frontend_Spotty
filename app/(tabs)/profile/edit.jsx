@@ -14,7 +14,7 @@ const user = {
 	email: "jose@gmail.com",
 };
 
-export default function EditProfileScreen() {
+export default function() {
 	const [loading, setLoading] = useState(true);
 	const [name, setName] = useState("");
 	const [lastName, setLastName] = useState("");

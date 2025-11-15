@@ -47,7 +47,7 @@ const exampleSpots = [
 	},
 ];
 
-const HomeScreen = () => {
+export default function() {
 	const [loading, setLoading] = useState(true);
 	const [spots, setSpots] = useState([]);
 
@@ -74,7 +74,7 @@ const HomeScreen = () => {
 			</View>
 		</View>
 	);
-};
+}
 
 const styles = StyleSheet.create({
 	header: {
@@ -132,5 +132,3 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 	},
 });
-
-export default HomeScreen;

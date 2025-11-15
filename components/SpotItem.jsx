@@ -2,7 +2,7 @@ import { Pressable, View, Text, StyleSheet, Image, TouchableOpacity, useWindowDi
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
-import SpotImage from "@/assets/images/333.jpg"
+import SpotImage from "@/assets/images/333.jpg";
 
 export default function SpotItem({
 	id,
@@ -95,7 +95,7 @@ export default function SpotItem({
 				<Text style={ styles.spotFreeSpots }>{ freeSpots } espacios disponibles</Text>
 				<TouchableOpacity
 					style={ styles.button }
-					onPress={() => Alert.alert() }
+					onPress={ () => router.push(`/spotBooking?id=${ id }`) }
 				>
 					<Text style={ styles.buttonText }>Reservar</Text>
 				</TouchableOpacity>

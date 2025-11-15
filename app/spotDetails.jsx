@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
 	reviews: {
 		flex: 1,
 		padding: 10,
-		backgroundColor: "#E5FAFF",
+		backgroundColor: "#f5f5f5",
 		margin: 10,
 		borderRadius: 10,
 	}

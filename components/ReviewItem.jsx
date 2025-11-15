@@ -15,7 +15,7 @@ export default function ReviewItem({ id, userName, title, content, image }) {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: "#f5f5f5",
+		backgroundColor: "#fff",
 		borderRadius: 5,
 		marginBottom: 20,
 		shadowColor: "#000",

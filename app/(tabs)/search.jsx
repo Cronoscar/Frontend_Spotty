@@ -109,7 +109,7 @@ const exampleSpots = [
 ];
 
 
-const SearchScreen = () => {
+export default function() {
 	const [loading, setLoading] = useState(false);
 	const [searchBox, setSearchBox] = useState("");
 	const [spots, setSpots] = useState([]);
@@ -154,7 +154,7 @@ const SearchScreen = () => {
 			</View>
 		</SafeAreaView>
 	);
-};
+}
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -182,5 +182,3 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 });
-
-export default SearchScreen;

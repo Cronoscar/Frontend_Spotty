@@ -57,7 +57,7 @@ const examplePaymentMethods = [
 	},
 ];
 
-export default function PaymentMethodsScreen() {
+export default function() {
 	const [loading, setLoading] = useState(true);
 	const [paymentMethods, setPaymentMethods] = useState([]);
 

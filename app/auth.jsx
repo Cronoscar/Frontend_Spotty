@@ -8,7 +8,7 @@ import RegisterForm from "@/components/RegisterForm";
 import LoginForm from "@/components/LoginForm";
 import Header from "@/components/Header";
 
-const AuthScreen = () => {
+export default function () {
 	const [form, setForm] = useState(Form.REGISTER);
 	const [error, setError] = useState("");
 	const router = useRouter();
@@ -45,7 +45,7 @@ const AuthScreen = () => {
 			</View>
 		</View>
 	);
-};
+}
 
 const styles = StyleSheet.create({
 	container: {
@@ -79,5 +79,3 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	}
 });
-
-export default AuthScreen;

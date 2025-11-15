@@ -8,7 +8,7 @@ import { useAuthStatus } from "@/hooks/useAuthStatus";
 
 import BookingService from "@/services/BookingService";
 
-const BookingsScreen = () => {
+export default function() {
 	const [bookings, setBookings] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [filter, setFilter] = useState(BookingFilter.ON_GOING);
@@ -51,7 +51,7 @@ const BookingsScreen = () => {
 			</View>
 		</View>
 	);
-};
+}
 
 function ToggleFilter({ filter, setFilter, isLoading }) {
 	return (
@@ -123,5 +123,3 @@ const styles = StyleSheet.create({
 		backgroundColor: "#f8f9fa",
 	},
 });
-
-export default BookingsScreen;
