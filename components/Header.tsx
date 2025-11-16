@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 type HeaderProps = {
 	title: string;
 	backAction?: () => void;
-}; 
+};
 
 export default function Header({ title, backAction }: HeaderProps) {
 	const router = useRouter();

@@ -3,13 +3,7 @@ import AuthService from "@/services/AuthService";
 
 import { ApiResponse } from "@/types/api";
 import { Session } from "@/types/session";
-
-type AuthContextType = {
-	session: Session | null;
-	login: ( email: string, password: string ) => Promise<ApiResponse<null>>;
-	logout: () => Promise<ApiResponse<null>>;
-	loadingSession: boolean;
-}
+import { AuthContextType } from "@/types/context";
 
 const AuthContext = createContext<AuthContextType>({
 	session: null,

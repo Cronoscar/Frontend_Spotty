@@ -1,10 +1,12 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState, useEffect } from "react";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 import SpotsGrid from "@/components/SpotsGrid";
+
+import { useSpotBooking } from "@/contexts/SpotBookingContext";
 
 import { Spot } from "@/types/spot";
 
@@ -15,8 +17,8 @@ const exampleSpot: Spot = {
 	freeSpots: 0,
 	distance: 0,
 	stars: 0,
-	price: 0
-}
+	price: 0,
+};
 
 const N_ROWS = 4;
 const N_COLUMNS = 9;
@@ -27,12 +29,25 @@ export default function() {
 	const [spot, setSpot] = useState<Spot | null>(null);
 	const router = useRouter();
 
+	const { id } = useLocalSearchParams();
+
+	const { data, setData } = useSpotBooking();
+
 	useEffect(function() {
 		setTimeout(function() {
 			setSpot(exampleSpot);
 			setLoading(false);
 		}, 500);
 	}, []);
+
+	useEffect(function() {
+		setData({
+			...data,
+			id: id,
+			title: spot?.title,
+			location: spot?.location,
+		});
+	}, [spot]);
 
 	if (loading) {
 		return (
@@ -83,6 +98,9 @@ export default function() {
 				<SpotsGrid
 					spots={ SPOTS_STATUS }
 					nColumns={ N_COLUMNS }
+					selectedSpot={ data }
+					setSelectedSpot={ setData }
+					continueAction={ () => router.push("/spotBooking/bookingDate") }
 				/>
 			</ScrollView>
 		</SafeAreaView>

@@ -1,7 +1,7 @@
 import { View, FlatList, StyleSheet } from "react-native";
 import PaymentMethod from "./PaymentMethod";
 
-import { PaymentMethod as PaymentMethodProps } from "@/types/payment_method";
+import { PaymentMethod as PaymentMethodProps } from "@/types/paymentMethod";
 import { PaymentMethodListProps } from "@/types/component";
 
 const PaymentMethodList = ({ paymentMethods }: PaymentMethodListProps) => (

@@ -1,6 +1,6 @@
 import { Text, ScrollView, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { useState, useEffect } from "react";
 import BookingService from "@/services/BookingService";
 import ReviewList from "@/components/ReviewList";
@@ -44,8 +44,9 @@ const spotExample: SpotDetails = {
 export default function() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [spot, setSpot] = useState<SpotDetails | null>(null);
+	const router = useRouter();
 
-	const params = useLocalSearchParams();
+	const { id } = useLocalSearchParams();
 
 	const spotPercentageUse: number = spot ? (spot.totalSpots - spot.freeSpots) / spot.totalSpots * 100 : 0;
 
@@ -105,7 +106,7 @@ export default function() {
 							<Text style={ styles.locationContent }>{ spot?.location }</Text>
 						</View>
 						<TouchableOpacity
-							onPress={ () => {} }
+							onPress={ () => router.push(`/spotBooking?id=${ id }`) }
 							style={ styles.button }
 						>
 							<Text style={ styles.buttonText }>Reservar Espacio</Text>

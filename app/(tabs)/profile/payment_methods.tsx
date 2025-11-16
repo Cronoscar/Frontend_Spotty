@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import PaymentMethodList from "@/components/PaymentMethodList";
 
-import { PaymentMethod } from "@/types/payment_method";
+import { PaymentMethod } from "@/types/paymentMethod";
 
 const examplePaymentMethods: PaymentMethod[] = [
 	{

@@ -1,5 +1,5 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Pressable } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ArrayUtils from "@/utils/ArrayUtils";
 
 import { RowProps, SpotGridProps, SpotSquareProps } from "@/types/component";
@@ -8,9 +8,21 @@ const ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 type coord = { x: number; y: number };
 
-export default function SpotsGrid({ spots, nColumns }: SpotGridProps) {
+export default function SpotsGrid({
+	spots,
+	nColumns,
+	selectedSpot,
+	setSelectedSpot,
+	continueAction
+}: SpotGridProps) {
 	const rows = ArrayUtils.splitN( [ ...spots ] , nColumns );
 	const [selected, setSelected] = useState<coord | null>(null);
+	const [position, setPosition] = useState<string | null>(null);
+
+	useEffect(function() {
+		setPosition( selected ? `${ ABC[ selected.y ] }${ selected.x + 1 }` : null );
+		setSelectedSpot( position ? { ...selectedSpot, position: position } : selectedSpot );
+	}, [selected]);
 
 	return (
 		<View style={ styles.grid }>
@@ -30,10 +42,10 @@ export default function SpotsGrid({ spots, nColumns }: SpotGridProps) {
 					<>
 						<View style={ styles.selectedSpot }>
 							<Text style={{ fontSize: 10, }}>Parqueo Seleccionado</Text>
-							<Text style={ styles.selectedSpotLabel } >{ ABC[ selected.y ] }{ selected.x + 1 }</Text>
+							<Text style={ styles.selectedSpotLabel } >{ position }</Text>
 						</View>
 						<TouchableOpacity
-							onPress={ () => {} }
+							onPress={ continueAction }
 							style={ styles.button }
 						>
 							<Text style={ styles.buttonText }>Continuar</Text>
@@ -124,8 +136,8 @@ const styles = StyleSheet.create({
 	button: {
 		alignSelf: "center",
 		backgroundColor: "#275C9C",
-		paddingVertical: 5,
-		paddingHorizontal: 15,
+		paddingVertical: 10,
+		paddingHorizontal: 25,
 		alignItems: "center",
 		justifyContent: "center",
 		borderRadius: 10,

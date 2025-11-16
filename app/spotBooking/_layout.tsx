@@ -1,8 +1,8 @@
-import { Stack } from "expo-router";
+import { Slot } from "expo-router";
+import { SpotBookingProvider } from '@/contexts/SpotBookingContext';
 
 export default () => (
-  <Stack screenOptions={{ headerShown: false }}>
-		<Stack.Screen name="index" />
-		<Stack.Screen name="bookDate" />
-	</Stack>
+	<SpotBookingProvider>
+		<Slot />
+	</SpotBookingProvider>
 );

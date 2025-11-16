@@ -1,4 +1,4 @@
 export type Session = {
-    id: number;
-    token: string;
+		id: number;
+		token: string;
 };
