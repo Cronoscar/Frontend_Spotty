@@ -1,10 +1,14 @@
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet, Alert, BackHandler, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import { useState, useEffect } from "react";
+
 import { Form } from "@/config/enums";
+
 import RegisterForm from "@/components/RegisterForm";
 import LoginForm from "@/components/LoginForm";
 import Header from "@/components/Header";
+
+import Configuration from "@/config/constants";
 
 export default function () {
 	const [form, setForm] = useState(Form.REGISTER);
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
 		alignSelf: "center",
 	},
 	header: {
-		backgroundColor: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
 		borderBottomLeftRadius: 40,
 		borderBottomRightRadius: 40,
 		paddingTop: 70,

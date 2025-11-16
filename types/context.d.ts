@@ -24,6 +24,7 @@ export type SpotBookingData = {
 	expirationDate?: string;
 	CVV?: string;
 	cardOwner?: string;
+	session?: Session;
 };
 
 export type SpotBookingContextType = {

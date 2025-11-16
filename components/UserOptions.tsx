@@ -1,7 +1,10 @@
 import { Text, ScrollView, View, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+
 import { useAuth } from "@/contexts/AuthContext";
+
+import Configuration from "@/config/constants";
 
 const UserOptions = () => {
 	const router = useRouter();
@@ -24,7 +27,7 @@ const UserOptions = () => {
 					onPress={ () => { router.push("/profile/edit") } }
 				>
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
-						<Ionicons name="person-outline" color="#275C9C" size={ 20 } />
+						<Ionicons name="person-outline" color={ Configuration.SPOTTY_PRIMARY_COLOR } size={ 20 } />
 						<Text style={ styles.userOptionText }>Editar perfil</Text>
 					</View>
 					<Ionicons name="chevron-forward-outline" color="gray" size={ 25 }/>
@@ -32,10 +35,10 @@ const UserOptions = () => {
 
 			<TouchableOpacity
 					style={ styles.userOption }
-					onPress={ () => { router.push("/profile/payment_methods") } }
+					onPress={ () => { router.push("/profile/paymentMethods") } }
 				>
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
-						<Ionicons name="card-outline" color="#275C9C" size={ 20 } />
+						<Ionicons name="card-outline" color={ Configuration.SPOTTY_PRIMARY_COLOR } size={ 20 } />
 						<Text style={ styles.userOptionText }>Métodos de pago</Text>
 					</View>
 					<Ionicons name="chevron-forward-outline" color="gray" size={ 25 }/>
@@ -43,10 +46,10 @@ const UserOptions = () => {
 
 			<TouchableOpacity
 					style={ styles.userOption }
-					onPress={ () => {} }
+					onPress={ () => router.push("/profile/help") }
 				>
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
-						<Ionicons name="help-circle-outline" color="#275C9C" size={ 20 } />
+						<Ionicons name="help-circle-outline" color={ Configuration.SPOTTY_PRIMARY_COLOR } size={ 20 } />
 						<Text style={ styles.userOptionText }>Ayuda y soporte</Text>
 					</View>
 					<Ionicons name="chevron-forward-outline" color="gray" size={ 25 }/>
@@ -58,7 +61,7 @@ const UserOptions = () => {
 					onPress={ () => {} }
 				>
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
-						<Ionicons name="settings-outline" color="#275C9C" size={ 20 } />
+						<Ionicons name="settings-outline" color={ Configuration.SPOTTY_PRIMARY_COLOR } size={ 20 } />
 						<Text style={ styles.userOptionText }>Configuración</Text>
 					</View>
 					<Ionicons name="chevron-forward-outline" color="gray" size={ 25 }/>

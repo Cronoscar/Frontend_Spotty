@@ -2,7 +2,9 @@ import { PaymentMethod } from "./enums";
 import { PaymentMethodOptionType } from "@/types/paymentMethod";
 
 const Configuration = {
-	API_BASE_URL: "" as string,
+	SPOTTY_PRIMARY_COLOR: "#275C9C",
+	SPOTTY_SECONDARY_COLOR: "#88CFE7",
+	API_BASE_URL: "",
 	paymentMethods: [
 		{
 			type: PaymentMethod.CREDIT_CARD,

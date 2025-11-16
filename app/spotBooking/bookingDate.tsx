@@ -6,14 +6,17 @@ import { useRouter } from "expo-router";
 
 import { useSpotBooking } from "@/contexts/SpotBookingContext";
 
+import Configuration from "@/config/constants";
+
 export default function() {
-	const [date, setDate] = useState<string>("");
-	const [startTime, setStartTime] = useState<string>("");
-	const [endTime, setEndTime] = useState<string>("");
+	const { data, setData } = useSpotBooking();
+
+	const [date, setDate] = useState<string>(data?.date || "");
+	const [startTime, setStartTime] = useState<string>(data?.startTime || "");
+	const [endTime, setEndTime] = useState<string>(data?.endTime || "");
 	const [total, setTotal] = useState<number>(10);
 
 	const router = useRouter();
-	const { data, setData } = useSpotBooking();
 
 	useEffect(function() {
 		const start = !startTime ? 0 : parseInt(startTime);
@@ -143,8 +146,8 @@ const styles = StyleSheet.create({
 	container: {
 	},
 	backButton: {
-		backgroundColor: "#88CFE7",
-		color: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_SECONDARY_COLOR,
+		color: Configuration.SPOTTY_PRIMARY_COLOR,
 		borderRadius: 100,
 		padding: 10,
 	},
@@ -199,7 +202,7 @@ const styles = StyleSheet.create({
 		borderColor: "#275C9C",
 		borderRadius: 10,
 		borderWidth: 1,
-		backgroundColor: "#88CFE7",
+		backgroundColor: Configuration.SPOTTY_SECONDARY_COLOR,
 		alignItems: "center",
 		marginHorizontal: 25,
 		marginTop: 35,
@@ -209,12 +212,12 @@ const styles = StyleSheet.create({
 	},
 	amountLabel: {
 		fontWeight: "bold",
-		color: "#275C9C",
+		color: Configuration.SPOTTY_PRIMARY_COLOR,
 		fontSize: 25,
 	},
 	button: {
 		alignSelf: "center",
-		backgroundColor: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
 		paddingVertical: 10,
 		paddingHorizontal: 25,
 		alignItems: "center",

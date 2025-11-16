@@ -3,7 +3,11 @@ import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
+
 import { useSpotBooking } from "@/contexts/SpotBookingContext";
+import { useAuth } from "@/contexts/AuthContext";
+
+import Configuration from "@/config/constants";
 
 export default function() {
 	const [cardNumber, setCardNumber] = useState<string>("");
@@ -13,6 +17,7 @@ export default function() {
 	const router = useRouter();
 
 	const { data, setData } = useSpotBooking();
+	const { session } = useAuth();
 
 	useEffect(function() {
 		setData({
@@ -21,6 +26,7 @@ export default function() {
 			expirationDate: expirationDate,
 			CVV: CVV,
 			cardOwner: cardOwner,
+			session: session,
 		});
 	}, [cardNumber, expirationDate, CVV, cardOwner]);
 
@@ -132,8 +138,8 @@ const styles = StyleSheet.create({
 	container: {
 	},
 	backButton: {
-		backgroundColor: "#88CFE7",
-		color: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_SECONDARY_COLOR,
+		color: Configuration.SPOTTY_PRIMARY_COLOR,
 		borderRadius: 100,
 		padding: 10,
 	},
@@ -175,7 +181,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		alignSelf: "center",
-		backgroundColor: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
 		paddingVertical: 10,
 		paddingHorizontal: 25,
 		alignItems: "center",

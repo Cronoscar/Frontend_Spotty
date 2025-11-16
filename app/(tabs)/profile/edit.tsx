@@ -7,6 +7,8 @@ import Header from "@/components/Header";
 
 import { UserData } from "@/types/user";
 
+import Configuration from "@/config/constants";
+
 import ProfilePicture from "@/assets/images/333.jpg";
 
 const user: UserData = {
@@ -51,7 +53,7 @@ export default function() {
 								justifyContent: "center",
 							}}
 						>
-							<ActivityIndicator size="large" color="#275C9C" />
+							<ActivityIndicator size="large" color={ Configuration.SPOTTY_PRIMARY_COLOR } />
 						</View>
 					) : (
 						<ScrollView contentContainerStyle={ styles.container }>

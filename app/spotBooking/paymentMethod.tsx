@@ -12,8 +12,9 @@ import PaymentMethodOption from "@/components/PaymentMethodOption";
 import { useSpotBooking } from "@/contexts/SpotBookingContext";
 
 export default function() {
-	const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null);
 	const { data, setData } = useSpotBooking();
+
+	const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(data?.paymentMethod || null);
 
 	const router = useRouter();
 
@@ -97,8 +98,8 @@ const styles = StyleSheet.create({
 	container: {
 	},
 	backButton: {
-		backgroundColor: "#88CFE7",
-		color: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_SECONDARY_COLOR,
+		color: Configuration.SPOTTY_PRIMARY_COLOR,
 		borderRadius: 100,
 		padding: 10,
 	},
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		alignSelf: "center",
-		backgroundColor: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
 		paddingVertical: 10,
 		paddingHorizontal: 25,
 		alignItems: "center",

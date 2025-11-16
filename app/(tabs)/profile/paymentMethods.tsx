@@ -5,6 +5,8 @@ import PaymentMethodList from "@/components/PaymentMethodList";
 
 import { PaymentMethod } from "@/types/paymentMethod";
 
+import Configuration from "@/config/constants";
+
 const examplePaymentMethods: PaymentMethod[] = [
 	{
 		id: 1,
@@ -77,7 +79,7 @@ export default function() {
 				loading
 					? (
 						<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-							<ActivityIndicator size="large" color="#275C9C" />
+							<ActivityIndicator size="large" color={ Configuration.SPOTTY_PRIMARY_COLOR } />
 						</View>
 					) : (
 							<View style={ styles.container }>
@@ -87,8 +89,8 @@ export default function() {
 									onPress={ () => {} }
 								>
 									<View style={ styles.buttonText }>
-										<Text style={{ color: "#275C9C", fontWeight: "bold", fontSize: 20, marginRight: 10, }}>+</Text>
-										<Text style={{ color: "#275C9C", fontSize: 15, }}>Agregar método de pago</Text>
+										<Text style={{ color: Configuration.SPOTTY_PRIMARY_COLOR, fontWeight: "bold", fontSize: 20, marginRight: 10, }}>+</Text>
+										<Text style={{ color: Configuration.SPOTTY_PRIMARY_COLOR, fontSize: 15, }}>Agregar método de pago</Text>
 									</View>
 								</TouchableOpacity>
 							</View>

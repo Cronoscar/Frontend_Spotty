@@ -7,6 +7,8 @@ import SpotList from "@/components/SpotList";
 
 import { Spot } from "@/types/spot";
 
+import Configuration from "@/config/constants";
+
 const exampleSpots: Spot[] = [
 	{
 		id: 1,
@@ -150,7 +152,7 @@ export default function() {
 			<View style={ styles.spots }>
 				{
 					loading
-						? <ActivityIndicator size='large' color='#275C9C' />
+						? <ActivityIndicator size="large" color={ Configuration.SPOTTY_PRIMARY_COLOR } />
 						: <SpotList spots={ spots }/>
 				}
 			</View>

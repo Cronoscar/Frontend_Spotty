@@ -70,3 +70,18 @@ export type SpotSquareProps = {
 		selected: { x: number; y: number } | null;
 		setSelected: (pos: { x: number; y: number } | null) => void;
 };
+
+export type FAQItemProps = {
+		title: string;
+		answer: string;
+};
+
+export type PaymentMethodItemProps = {
+		title: string;
+		expirationDate: string;
+		isDefault?: boolean;
+};
+
+export type FAQListProps = {
+		faqs: FAQ[];
+};
