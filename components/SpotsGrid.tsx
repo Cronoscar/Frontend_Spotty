@@ -19,10 +19,9 @@ export default function SpotsGrid({
 	const [selected, setSelected] = useState<coord | null>(null);
 	const [position, setPosition] = useState<string | null>(null);
 
-	useEffect(function() {
-		setPosition( selected ? `${ ABC[ selected.y ] }${ selected.x + 1 }` : null );
-		setSelectedSpot( position ? { ...selectedSpot, position: position } : selectedSpot );
-	}, [selected]);
+	useEffect(() => setPosition( selected ? `${ ABC[ selected.y ] }${ selected.x + 1 }` : null ), [selected]);
+
+	useEffect(() => setSelectedSpot( position ? { ...selectedSpot, position: position } : selectedSpot ), [position]);
 
 	return (
 		<View style={ styles.grid }>

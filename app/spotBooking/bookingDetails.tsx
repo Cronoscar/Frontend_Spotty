@@ -1,31 +1,62 @@
-import { ScrollView, TouchableOpacity, StyleSheet, View, Text, Pressable } from "react-native";
-import { useRouter } from "expo-router";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSpotBooking } from "@/contexts/SpotBookingContext";
+import { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 export default function() {
 	const router = useRouter();
+	const { data } = useSpotBooking();
 
+	useEffect(function() {
+		console.log(data);
+	}, []);
+	
 	return (
 		<SafeAreaView style={ styles.safeArea }>
-			<TouchableOpacity
-				style={{ alignSelf: "flex-start", paddingBottom: 10, }}
-				onPress={ () => router.back() }
-			>
-				<Ionicons
-					style={ styles.backButton }
-					name="arrow-back-outline"
-					size={ 20 }
-				/>
-			</TouchableOpacity>
-			<ScrollView
-				contentContainerStyle={{ padding: 15 }}
-			>
-				<View style={ styles.container }>
-					<Text style={ styles.title }>Detalles del Pago</Text>
-					<Text style={ styles.subtitle }>Ingresa tu información de pago</Text>
+			<Ionicons
+				style={{ alignSelf: "center", color: "#16A249" }}
+				name="checkmark-done-circle-outline"
+				size={ 200 }
+			/>
+			<View style={{ alignItems: "center", }}>
+				<Text style={{ fontWeight: "bold", fontSize: 30, }}>Reserva Confirmada</Text>
+				<Text style={{ color: "gray", fontWeight: "bold", }}>Su plaza de parqueo está asegurada</Text>
+			</View>
+			<Ionicons
+				style={{ alignSelf: "center", marginVertical: 25, }}
+				name="qr-code-outline"
+				size={ 150 }
+			/>
+			<View style={{ borderColor: "lightgray", borderWidth: 1, borderRadius: 10, padding: 15, marginBottom: 20, }}>
+				<View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10, }}>
+					<Text>ID Reserva</Text>
+					<Text>1111</Text>
 				</View>
-			</ScrollView>
+				<View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10, }}>
+					<Text>Ubicación</Text>
+					<Text>{ data?.location }</Text>
+				</View>
+				<View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10, }}>
+					<Text>Espacio</Text>
+					<Text>{ data?.position }</Text>
+				</View>
+				<View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10, }}>
+					<Text>Fecha</Text>
+					<Text>{ data?.date }</Text>
+				</View>
+				<View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10, }}>
+					<Text>Tiempo</Text>
+					<Text>{ data?.time }</Text>
+				</View>
+			</View>
+			<TouchableOpacity
+				onPress={ () => router.replace("/") }
+				style={ styles.button }
+			>
+				<Text style={ styles.buttonText }>Regresar</Text>
+			</TouchableOpacity>
 		</SafeAreaView>
 	);
 }
@@ -34,25 +65,20 @@ const styles = StyleSheet.create({
 	safeArea: {
 		flex: 1,
 		backgroundColor: "#fff",
-		paddingVertical: 10,
+		paddingVertical: 20,
 		paddingHorizontal: 15,
 	},
-	container: {
+	button: {
+		alignSelf: "center",
+		backgroundColor: "#275C9C",
+		paddingVertical: 10,
+		paddingHorizontal: 25,
+		alignItems: "center",
+		justifyContent: "center",
+		borderRadius: 10,
 	},
-	backButton: {
-		backgroundColor: "#88CFE7",
-		color: "#275C9C",
-		borderRadius: 100,
-		padding: 10,
-	},
-	title: {
+	buttonText: {
 		fontWeight: "bold",
-		fontSize: 20,
-	},
-	subtitle: {
-		fontSize: 15,
-		color: "gray",
-		marginVertical: 10,
-		marginHorizontal: 15,
-	},
+		color: "white",
+	}
 });

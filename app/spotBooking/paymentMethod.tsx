@@ -1,5 +1,5 @@
 import { ScrollView, TouchableOpacity, StyleSheet, View, Text, Pressable } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,9 +15,14 @@ export default function() {
 	const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null);
 	const { data, setData } = useSpotBooking();
 
-	const subtotal = (data?.total ?? 0) - (data?.isv ?? 0);
-
 	const router = useRouter();
+
+	useEffect(function() {
+		setData({
+			...data,
+			paymentMethod: paymentMethod ?? undefined,
+		});
+	}, [paymentMethod]);
 
 	return (
 		<SafeAreaView style={ styles.safeArea }>
@@ -56,7 +61,7 @@ export default function() {
 				<View style={{ borderColor: "lightgray", borderWidth: 1, borderRadius: 10, padding: 15, }}>
 					<View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10, }}>
 						<Text>Subtotal (2 horas)</Text>
-						<Text>${ subtotal }</Text>
+						<Text>${ data?.subtotal ?? 0 }</Text>
 					</View>
 					<View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10, }}>
 						<Text>ISV</Text>
@@ -70,7 +75,7 @@ export default function() {
 				{
 					paymentMethod && (
 						<TouchableOpacity
-							onPress={ () => router.push("/spotBooking/bookingDetails") }
+							onPress={ () => router.push("/spotBooking/paymentDetails") }
 							style={ styles.button }
 						>
 							<Text style={ styles.buttonText }>Continuar</Text>

@@ -16,13 +16,18 @@ export default function() {
 	const { data, setData } = useSpotBooking();
 
 	useEffect(function() {
+		const start = !startTime ? 0 : parseInt(startTime);
+		const end = !endTime ? 0 : parseInt(endTime);
+
 		setData({
 			...data,
 			date: date,
 			startTime: startTime,
 			endTime: endTime,
+			time: end - start,
 			total: total,
 			isv: total * 0.15,
+			subtotal: total - (total * 0.15),
 		});
 	}, [date, startTime, endTime]);
 
