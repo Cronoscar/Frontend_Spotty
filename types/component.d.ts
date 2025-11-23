@@ -85,3 +85,16 @@ export type PaymentMethodItemProps = {
 export type FAQListProps = {
 		faqs: FAQ[];
 };
+
+export type SelectProps = {
+	selectId: number;
+	name: string;
+	options: string[];
+	filters: Record<number, string>,
+	setFilters: (filters: Record<number, string>) => void;
+}
+
+export type SearchFiltersProps = {
+	filters: Record<number, string>;
+	setFilters: (filters: Record<number, string>) => void;
+};

@@ -3,6 +3,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ApiResponse } from "@/types/api";
 import { Session } from "@/types/session";
 
+import { UserRole } from "@/config/enums";
+
 class AuthService {
 	static async getSession(): Promise<ApiResponse<Session>> {
 		try {
@@ -19,7 +21,7 @@ class AuthService {
 	}
 
 	static async login( email: string , password: string ): Promise<ApiResponse<Session>> {
-		const session = { id: 1, token: "" };
+		const session: Session = { id: 1, token: "", role: UserRole.COMMERCE };
 		await AsyncStorage.setItem("session", JSON.stringify(session));
 		return { ok: true, data: session };
 	}

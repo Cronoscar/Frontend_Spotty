@@ -12,11 +12,11 @@ const AuthContext = createContext<AuthContextType>({
 	loadingSession: true,
 } as AuthContextType);
 
-export const AuthProvider = ({ children }: any ) => {
+export function AuthProvider({ children }: any ) {
 	const [session, setSession] = useState<Session | null>(null);
 	const [loadingSession, setLoadingSession] = useState(false);
 
-	useEffect(() => {
+	useEffect(function () {
 		checkSession();
 	}, []);
 
@@ -25,12 +25,11 @@ export const AuthProvider = ({ children }: any ) => {
 
 		const response: ApiResponse<Session> = await AuthService.getSession();
 
-		if (response.error) {
-			return;
-		}
-
-		if (response.data) setSession( response.data );
 		setLoadingSession(false);
+
+		if (response.error) return;
+
+		response.data && setSession(response.data);
 	}
 
 	async function login( email: string, password: string ): Promise<ApiResponse<null>> {

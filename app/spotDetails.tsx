@@ -9,7 +9,7 @@ import { SpotDetails } from "@/types/spot";
 
 import Configuration from "@/config/constants";
 
-import SpotImage from "@/assets/images/333.jpg";
+import SpotImage from "@/assets/images/spot.png";
 
 const spotExample: SpotDetails = {
 	id: 1,

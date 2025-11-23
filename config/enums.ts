@@ -13,3 +13,9 @@ export enum PaymentMethod {
 	CASH = 2,
 	DIGITAL_WALLET = 3,
 };
+
+export enum UserRole {
+	NON_AUTHENTICATED_USER = 1,
+	AUTHENTICATED_USER = 2,
+	COMMERCE = 3,
+}

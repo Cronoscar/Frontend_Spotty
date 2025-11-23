@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 
 import { SpotItemProps } from "@/types/component";
 
-import SpotImage from "@/assets/images/333.jpg";
+import SpotImage from "@/assets/images/location.png";
 
 export default function SpotItem({
 	id,

@@ -2,7 +2,6 @@ import { View, ScrollView, Text, TextInput, TouchableOpacity, ActivityIndicator,
 import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { Placeholder, PlaceholderMedia, PlaceholderLine, Fade } from "rn-placeholder";
 import Header from "@/components/Header";
 
 import { UserData } from "@/types/user";
