@@ -30,7 +30,7 @@ export default function () {
 	}, [error]);
 
 	return (
-		<View style={{ flex: 1, backgroundColor: "#fff", maxHeight: "55%" }}>
+		<View style={{ flex: 1, backgroundColor: "#fff", }}>
 			<Header
 				title={
 					form == Form.LOGIN
@@ -39,25 +39,16 @@ export default function () {
 				}
 				backAction={ () => router.replace("/") }
 			/>
-			<View style={ styles.container }>
+			<ScrollView style={ styles.container }>
 				<Image source={ Logo } style={ styles.logo } />
-				<View 
-					style={{
-						borderColor: "lightgray",
-						borderWidth: 1,
-						borderRadius: 10,
-						padding: 15,
-					}}
-				>
-					<ScrollView contentContainerStyle={ styles.form }>
-						{
-							form == Form.LOGIN
-								? <LoginForm setError={ setError } setForm={ setForm }/>
-								: <RegisterForm setError={ setError } setForm={ setForm }/>
-						}
-					</ScrollView>
+				<View style={ styles.form }>
+					{
+						form == Form.LOGIN
+							? <LoginForm setError={ setError } setForm={ setForm }/>
+							: <RegisterForm setError={ setError } setForm={ setForm }/>
+					}
 				</View>
-			</View>
+			</ScrollView>
 		</View>
 	);
 }
@@ -65,11 +56,13 @@ export default function () {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		width: "80%",
-		alignSelf: "center",
 	},
 	form: {
-		paddingHorizontal: 10,
+		borderColor: "lightgray",
+		borderWidth: 1,
+		borderRadius: 10,
+		padding: 15,
+		margin: 15,
 	},
 	error: {
 		backgroundColor: "red",
@@ -82,8 +75,8 @@ const styles = StyleSheet.create({
 	},
 	logo: {
 		width: 250,
-		height: 250,
-		maxHeight: 250,
+		height: 350,
+		maxHeight: 350,
 		maxWidth: 250,
 		marginVertical: 30,
 		marginHorizontal: "auto",

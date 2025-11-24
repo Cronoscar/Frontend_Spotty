@@ -6,9 +6,16 @@ import { UserRole } from "@/config/enums";
 import { Tab } from "@/types/tab";
 
 import { useAuth } from "@/contexts/AuthContext";
+import { useEffect, useState } from "react";
 
 export default function() {
+	const [tabs, setTabs] = useState<Tab[]>([]);
 	const { session } = useAuth();
+
+	useEffect(function() {
+		console.log(getTabs());
+		setTabs(getTabs());
+	}, [session])
 
 	return (
 		<Tabs
@@ -19,7 +26,7 @@ export default function() {
 			}}
 		>
 			{
-				getTabs()
+				tabs
 					.map(function(tab: Tab) {
 						return { ...tab, show: tab.roles.includes(session.role)}
 					})

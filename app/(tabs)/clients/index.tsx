@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
+import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
 import { useState, useEffect } from "react";
 
 import SpotList from "@/components/SpotList";
@@ -6,8 +6,6 @@ import SpotList from "@/components/SpotList";
 import { Spot } from "@/types/spot";
 
 import Configuration from "@/config/constants";
-import { useAuth } from "@/contexts/AuthContext";
-import { Redirect } from "expo-router";
 
 const exampleSpots: Spot[] = [
 	{
@@ -55,11 +53,6 @@ const exampleSpots: Spot[] = [
 export default function() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [spots, setSpots] = useState<Spot[]>([]);
-
-	const {session} = useAuth();
-
-	useEffect(() => console.log(session), []);
-
 
 	useEffect(() => {
 		setTimeout(() => {

@@ -2,6 +2,7 @@ import { Form } from "@/config/enums";
 import { PaymentMethod } from "./paymentMethod";
 import { Review } from "./review";
 import { Spot } from "./spot";
+import { Place } from "./place";
 
 export type BookingListProps = {
 		bookings: Booking[];
@@ -98,3 +99,16 @@ export type SearchFiltersProps = {
 	filters: Record<number, string>;
 	setFilters: (filters: Record<number, string>) => void;
 };
+
+export type PlaceListProps = {
+	places: Place[];
+};
+
+export type PlaceItemProps = {
+	id: number;
+	title: string;
+	location: string;
+	price: string;
+	availableSpots: number;
+	totalSpots: number;
+}
