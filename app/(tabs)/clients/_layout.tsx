@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 
@@ -9,12 +9,11 @@ import { Tab } from "@/types/tab";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function() {
-	const [tabs, setTabs] = useState<Tab[]>([]);
 	const { session } = useAuth();
 
-	useEffect(function() {
-		setTabs(getTabs());
-	}, [session]);
+	if (session.role === UserRole.COMMERCE) {
+		return <Redirect href="/commerce/places" />;
+	}
 
 	return (
 		<Tabs
@@ -25,10 +24,7 @@ export default function() {
 			}}
 		>
 			{
-				tabs
-					.map(function(tab: Tab) {
-						return { ...tab, show: tab.roles.includes(session.role)}
-					})
+				getTabs()
 					.map(function(tab: Tab) {
 						return (
 							<Tabs.Screen
@@ -78,5 +74,19 @@ function getTabs() {
 			roles: [UserRole.NON_AUTHENTICATED_USER, UserRole.AUTHENTICATED_USER],
 			show: false,
 		},
+		{
+			name: "spotBooking",
+			title: "",
+			icon: "",
+			roles: [],
+			show: false,
+		},
+		{
+			name: "spotDetails",
+			title: "",
+			icon: "",
+			roles: [],
+			show: false,
+		}
 	];
 }

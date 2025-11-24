@@ -124,7 +124,7 @@ export default function() {
 				{
 					date && startTime && endTime && (
 						<TouchableOpacity
-							onPress={ () => router.push("/spotBooking/paymentMethod") }
+							onPress={ () => router.push("/clients/spotBooking/paymentMethod") }
 							style={ styles.button }
 						>
 							<Text style={ styles.buttonText }>Continuar con el pago</Text>

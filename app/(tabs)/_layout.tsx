@@ -1,30 +1,9 @@
-import { Slot } from "expo-router";
+import { Redirect, Slot } from "expo-router";
+import { useAuth } from "@/contexts/AuthContext";
+import { UserRole } from "@/config/enums";
 
 export default function() {
+	// const { session } = useAuth();
+	// return session.role === UserRole.COMMERCE ? <Slot /> : <Redirect href="/clients" />;
 	return <Slot />
-	// return (
-	// 	<Tabs
-	// 		screenOptions={{
-	// 			tabBarActiveTintColor: "#275C9C",
-	// 			tabBarInactiveTintColor: "gray",
-	// 			headerShown: false,
-	// 		}}>
-	// 			{
-	// 				tabs.map(function(tab: Tab) {
-	// 					return (
-	// 						<Tabs.Screen
-	// 							name={ tab.name }
-	// 							options={{
-	// 									title: tab.title,
-	// 									tabBarIcon: function({ color, size }) {
-	// 										return <Ionicons name={ tab.icon } color={ color } size={ size } />
-	// 									},
-	// 									...( tab.show ? {} : { href: null } )
-	// 							}}
-	// 						/>
-	// 					);
-	// 				})
-	// 			}
-	// 	</Tabs>
-	// );
 };

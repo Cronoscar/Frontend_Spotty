@@ -21,7 +21,7 @@ export default function SpotItem({
 
 	return (
 		<Pressable
-			onPress={ () => router.push(`/spotDetails?id=${ id }`) }
+			onPress={ () => router.push(`/clients/spotDetails?id=${ id }`) }
 			style={{
 				...styles.spotItem,
 				width: width * 0.8
@@ -97,7 +97,7 @@ export default function SpotItem({
 				<Text style={ styles.spotFreeSpots }>{ freeSpots } espacios disponibles</Text>
 				<TouchableOpacity
 					style={ styles.button }
-					onPress={ () => router.push(`/spotBooking?id=${ id }`) }
+					onPress={ () => router.push(`/clients/spotBooking?id=${ id }`) }
 				>
 					<Text style={ styles.buttonText }>Reservar</Text>
 				</TouchableOpacity>

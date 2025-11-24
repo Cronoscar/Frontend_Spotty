@@ -76,7 +76,7 @@ export default function() {
 				{
 					paymentMethod && (
 						<TouchableOpacity
-							onPress={ () => router.push("/spotBooking/paymentDetails") }
+							onPress={ () => router.push("/clients/spotBooking/paymentDetails") }
 							style={ styles.button }
 						>
 							<Text style={ styles.buttonText }>Continuar</Text>

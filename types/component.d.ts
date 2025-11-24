@@ -50,10 +50,9 @@ export type SpotListProps = {
 };
 
 export type SpotGridProps = {
-		spots: string;
-		nColumns: number;
-		selectedSpot: SpotBookingData;
-		setSelectedSpot: (pos: SpotBookingData) => void;
+		rows: string[];
+		selectedSpot?: SpotBookingData;
+		setSelectedSpot?: (pos: SpotBookingData) => void;
 		continueAction?: () => void;
 };
 
@@ -62,6 +61,7 @@ export type RowProps = {
 		rowIdx: number;
 		selected: { x: number; y: number } | null;
 		setSelected: (pos: { x: number; y: number } | null) => void;
+		allowPress: boolean;
 };
 
 export type SpotSquareProps = {
@@ -70,6 +70,7 @@ export type SpotSquareProps = {
 		y: number;
 		selected: { x: number; y: number } | null;
 		setSelected: (pos: { x: number; y: number } | null) => void;
+		allowPress: boolean;
 };
 
 export type FAQItemProps = {
@@ -111,4 +112,10 @@ export type PlaceItemProps = {
 	price: string;
 	availableSpots: number;
 	totalSpots: number;
-}
+};
+
+export type RowConfigurationProps = {
+	rowIndex: number;
+	rows: string[];
+	setRows: (rows: string[]) => void;
+};

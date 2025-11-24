@@ -1,4 +1,4 @@
-import { Text, StyleSheet, View, ActivityIndicator, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, View, ActivityIndicator, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -59,7 +59,8 @@ const examplePlaces: Place[] = [
 
 export default function() {
 	const [loading, setLoading] = useState<boolean>(true);
-	const [places, setPlaces] = useState<Place[]>([])
+	const [places, setPlaces] = useState<Place[]>([]);
+	const [searchBox, setSearchBox] = useState<string>("");
 
 	const { session } = useAuth();
 	
@@ -93,6 +94,7 @@ export default function() {
 					<Text style={ styles.subtitle }>Gestiona tus espacios de parqueo</Text>
 				</View>
 				<TouchableOpacity
+					onPress={ function() { router.push("/commerce/places/newPlace") } }
 					style={ styles.addButton }
 				>
 					<Text style={ styles.buttonText }>+ Agregar</Text>
@@ -101,13 +103,29 @@ export default function() {
 			{
 				places.length === 0
 					? <NoPlaces />
-					: <PlaceList places={ places } />
+					: (
+						<>
+							<View style={ styles.search }>
+								<TextInput
+									style={ styles.input }
+									placeholder="Buscar establecimiento"
+									placeholderTextColor="gray"
+									value={ searchBox }
+									onChangeText={ setSearchBox }
+								/>
+								<Ionicons name="search" size={ 20 } color="#999" />
+							</View>
+							<PlaceList places={ places } />
+						</>
+					)
 			}
 		</SafeAreaView>
 	);
 }
 
 function NoPlaces() {
+	const router = useRouter();
+
 	return (
 		<View
 			style={{
@@ -149,6 +167,7 @@ function NoPlaces() {
 				Comienza agregando tu primer establecimiento
 			</Text>
 			<TouchableOpacity
+				onPress={ function() { router.push("/commerce/places/newPlace") } }
 				style={ styles.addButton }
 			>
 				<Text style={ styles.buttonText }>+ Agregar Establecimiento</Text>
@@ -159,15 +178,18 @@ function NoPlaces() {
 
 const styles = StyleSheet.create({
 	header: {
+		width: "100%",
 		flexDirection: "row",
-		marginVertical: 10,
+		marginTop: 10,
 		marginHorizontal: 15,
 		alignItems: "center",
 		alignSelf: "center",
+		justifyContent: "space-between",
+		paddingHorizontal: 15,
 	},
 	title: {
 		fontWeight: "bold",
-		fontSize: 25,
+		fontSize: 20,
 	},
 	subtitle: {
 		fontSize: 15,
@@ -179,11 +201,23 @@ const styles = StyleSheet.create({
 		paddingVertical: 7,
 		paddingHorizontal: 20,
 		borderRadius: 10,
-		marginHorizontal: 10,
 	},
 	buttonText: {
 		color: "#fff",
 		fontWeight: "bold",
 		fontSize: 14,
+	},
+	search: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginTop: 10,
+		marginHorizontal: 10,
+		backgroundColor: "lightgray",
+		borderRadius: 20,
+		paddingHorizontal: 15,
+	},
+	input: {
+		flex: 2,
+		paddingVertical: 10,
 	},
 });

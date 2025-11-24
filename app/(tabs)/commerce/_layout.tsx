@@ -9,13 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 
 export default function() {
-	const [tabs, setTabs] = useState<Tab[]>([]);
 	const { session } = useAuth();
-
-	useEffect(function() {
-		console.log(getTabs());
-		setTabs(getTabs());
-	}, [session])
 
 	return (
 		<Tabs
@@ -26,7 +20,7 @@ export default function() {
 			}}
 		>
 			{
-				tabs
+				getTabs()
 					.map(function(tab: Tab) {
 						return { ...tab, show: tab.roles.includes(session.role)}
 					})
@@ -52,7 +46,7 @@ export default function() {
 function getTabs(): Tab[] {
 	return [
 		{
-			name: "index",
+			name: "places",
 			title: "Inicio",
 			icon: "home-outline",
 			roles: [UserRole.COMMERCE],

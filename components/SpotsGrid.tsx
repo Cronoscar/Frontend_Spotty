@@ -1,6 +1,5 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Pressable } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Pressable } from "react-native";
 import { useEffect, useState } from "react";
-import ArrayUtils from "@/utils/ArrayUtils";
 
 import { RowProps, SpotGridProps, SpotSquareProps } from "@/types/component";
 
@@ -9,19 +8,26 @@ const ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 type coord = { x: number; y: number };
 
 export default function SpotsGrid({
-	spots,
-	nColumns,
+	rows,
 	selectedSpot,
 	setSelectedSpot,
 	continueAction
 }: SpotGridProps) {
-	const rows = ArrayUtils.splitN( [ ...spots ] , nColumns );
 	const [selected, setSelected] = useState<coord | null>(null);
 	const [position, setPosition] = useState<string | null>(null);
+	const [allowPress, setAllowPress] = useState<boolean>(
+		selectedSpot != undefined
+		&& setSelectedSpot != undefined
+		&& continueAction != undefined
+	);
 
-	useEffect(() => setPosition( selected ? `${ ABC[ selected.y ] }${ selected.x + 1 }` : null ), [selected]);
+	useEffect(function() {
+		setPosition( selected ? `${ ABC[ selected.y ] }${ selected.x + 1 }` : null )
+	}, [selected]);
 
-	useEffect(() => setSelectedSpot( position ? { ...selectedSpot, position: position } : selectedSpot ), [position]);
+	useEffect(function() {
+		allowPress && setSelectedSpot!( position ? { ...selectedSpot, position: position } : selectedSpot )
+	}, [position]);
 
 	return (
 		<View style={ styles.grid }>
@@ -29,10 +35,11 @@ export default function SpotsGrid({
 				rows.map((columns, idx) => (
 					<Row
 						key={ idx }
-						columns={ columns }
+						columns={ [...columns] }
 						rowIdx={ idx }
 						selected={ selected }
 						setSelected={ setSelected }
+						allowPress={ allowPress }
 					/>
 				))
 			}
@@ -56,35 +63,60 @@ export default function SpotsGrid({
 	);
 }
 
-function Row({ columns, rowIdx, selected, setSelected }: RowProps) {
+function Row({
+	columns,
+	rowIdx,
+	selected,
+	setSelected,
+	allowPress
+}: RowProps) {
 	return (
 		<View style={ styles.row }>
-			<View style={{ ...styles.spotSquare, backgroundColor: "lightgray" }}>
+			<View
+				style={{
+					...styles.spotSquare,
+					backgroundColor: "lightgray",
+					flex: 0,
+					paddingHorizontal: 15,
+				}}
+			>
 				<Text style={{ ...styles.spotIndex, color: "gray" }}>{ ABC[ rowIdx ] }</Text>
 			</View>
 			{
-				columns.map( (bit, idx) => (
-					<Spot
-						key={ idx }
-						bit={ parseInt(bit) as 1 | 0 }
-						x={ idx }
-						y={ rowIdx }
-						selected={ selected }
-						setSelected={ setSelected }
-					/>
-				))
+				columns.map(function(bit: string, idx: number) {
+					return (
+						<Spot
+							key={ idx }
+							bit={ parseInt(bit) as 1 | 0 }
+							x={ idx }
+							y={ rowIdx }
+							selected={ selected }
+							setSelected={ setSelected }
+							allowPress={ allowPress }
+						/>
+					);
+				})
 			}
 		</View>
 	);
 }
 
-function Spot({ bit, x, y, selected, setSelected }: SpotSquareProps) {
+function Spot({
+	bit,
+	x,
+	y,
+	selected,
+	setSelected,
+	allowPress
+}: SpotSquareProps) {
 	let backgroundColor = bit == 1 ? "#16A249" : "#ef4444";
 	if (selected && selected.x == x && selected.y == y) backgroundColor = "#275C9C";
 
 	return (
 		<Pressable
-			onPress={ () => bit && setSelected({ x: x, y: y }) }
+			onPress={ function() {
+				allowPress && bit && setSelected({ x: x, y: y })
+			}}
 			style={{
 				...styles.spotSquare,
 				backgroundColor: backgroundColor,

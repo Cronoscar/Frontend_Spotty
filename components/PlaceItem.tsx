@@ -49,12 +49,15 @@ export default function PlaceItem({
 				<TouchableOpacity
 					style={{ ...styles.button, flex: 1, }}
 				>
-					<Text style={ styles.buttonText }>Gestionar Espacios</Text>
+					<Ionicons style={{ ...styles.buttonText, fontSize: 25, marginRight: 5 }} name="create-outline" />
+					<Text style={ styles.buttonText }>
+						Gestionar Espacios
+					</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={ styles.button }
 				>
-					<Ionicons style={ styles.buttonText } name="trash-outline" size={ 20 } />
+					<Ionicons style={{ ...styles.buttonText, fontSize: 20 }} name="trash-outline" />
 				</TouchableOpacity>
 			</View>
 		</View>
@@ -102,6 +105,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10,
 		alignItems: "center",
 		justifyContent: "center",
+		flexDirection: "row",
 	},
 	buttonText: {
 		color: "#fff",

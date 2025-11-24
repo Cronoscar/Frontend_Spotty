@@ -108,7 +108,7 @@ export default function() {
 							<Text style={ styles.locationContent }>{ spot?.location }</Text>
 						</View>
 						<TouchableOpacity
-							onPress={ () => router.push(`/spotBooking?id=${ id }`) }
+							onPress={ () => router.push(`/clients/spotBooking?id=${ id }`) }
 							style={ styles.button }
 						>
 							<Text style={ styles.buttonText }>Reservar Espacio</Text>

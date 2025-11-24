@@ -28,6 +28,12 @@ const N_ROWS = 4;
 const N_COLUMNS = 9;
 const SPOTS_STATUS = "101011001010111011010010110111010001";
 
+const SPOT_ROWS: string[] = [
+	"101101",
+	"000010101",
+	"01010101"
+];
+
 export default function() {
 	const [loading, setLoading] = useState(true);
 	const [spot, setSpot] = useState<Spot | null>(null);
@@ -102,11 +108,10 @@ export default function() {
 					<Text>Seleccionado</Text>
 				</View>
 				<SpotsGrid
-					spots={ SPOTS_STATUS }
-					nColumns={ N_COLUMNS }
+					rows={ SPOT_ROWS }
 					selectedSpot={ data }
 					setSelectedSpot={ setData }
-					continueAction={ () => router.push("/spotBooking/bookingDate") }
+					continueAction={ () => router.push("/clients/spotBooking/bookingDate") }
 				/>
 			</ScrollView>
 		</SafeAreaView>

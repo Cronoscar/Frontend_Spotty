@@ -116,7 +116,7 @@ export default function() {
 				{
 					cardNumber && expirationDate && CVV && cardOwner && (
 						<TouchableOpacity
-							onPress={ () => router.push("/spotBooking/bookingDetails") }
+							onPress={ () => router.push("/clients/spotBooking/bookingDetails") }
 							style={ styles.button }
 						>
 							<Text style={ styles.buttonText }>Reservar</Text>
