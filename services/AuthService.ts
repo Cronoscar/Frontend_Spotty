@@ -21,7 +21,8 @@ class AuthService {
 	}
 
 	static async login( email: string , password: string ): Promise<ApiResponse<Session>> {
-		const session: Session = { id: 1, token: "", role: UserRole.COMMERCE };
+		const session: Session = { id: 1, token: "", role: UserRole.AUTHENTICATED_USER };
+		if (email.trim() === "admin") session["role"] = 3;
 		await AsyncStorage.setItem("session", JSON.stringify(session));
 		return { ok: true, data: session };
 	}

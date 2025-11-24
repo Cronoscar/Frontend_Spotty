@@ -29,7 +29,7 @@ export default function() {
 			return;
 		}
 
-		if (response.data) setUser(response?.data);
+		if (response.data) setUser(response.data);
 		setLoading(false);
 	});
 

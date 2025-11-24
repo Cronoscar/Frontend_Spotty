@@ -8,8 +8,6 @@ import RegisterForm from "@/components/RegisterForm";
 import LoginForm from "@/components/LoginForm";
 import Header from "@/components/Header";
 
-import Configuration from "@/config/constants";
-
 import Logo from "@/assets/images/logo.png";
 
 export default function () {
@@ -71,6 +69,7 @@ const styles = StyleSheet.create({
 		alignSelf: "center",
 	},
 	form: {
+		paddingHorizontal: 10,
 	},
 	error: {
 		backgroundColor: "red",

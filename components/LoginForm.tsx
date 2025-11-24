@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { Form } from "@/config/enums";
+import { Form, UserRole } from "@/config/enums";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
@@ -28,7 +28,7 @@ export default function LoginForm({ setError, setForm }: LoginFormProps) {
 		const res = await login(email, password);
 
 		if (res.ok) {
-			router.replace("/(tabs)/profile");
+			router.replace("/");
 		} else {
 			Alert.alert("Error iniciando sesión", "Inténtelo nuevamente.");
 		}
