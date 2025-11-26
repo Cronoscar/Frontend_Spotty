@@ -2,6 +2,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
+import Configuration from "@/config/constants";
+
 type HeaderProps = {
 	title: string;
 	backAction?: () => void;
@@ -27,7 +29,7 @@ export default function Header({ title, backAction }: HeaderProps) {
 
 const styles = StyleSheet.create({
 	header: {
-		backgroundColor: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
 		borderBottomLeftRadius: 40,
 		borderBottomRightRadius: 40,
 		paddingTop: 70,

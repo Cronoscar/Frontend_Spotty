@@ -26,8 +26,6 @@ export default function() {
 
 	useEffect(function() {
 		async function getBookings() {
-			if (!session) return;
-
 			const response: ApiResponse<Booking[]> = await BookingService.getUserBookings( session?.id, filter );
 
 			setLoading(false);

@@ -2,10 +2,11 @@ import { View, ScrollView, Text, TextInput, TouchableOpacity, ActivityIndicator,
 import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { Placeholder, PlaceholderMedia, PlaceholderLine, Fade } from "rn-placeholder";
 import Header from "@/components/Header";
 
 import { UserData } from "@/types/user";
+
+import Configuration from "@/config/constants";
 
 import ProfilePicture from "@/assets/images/333.jpg";
 
@@ -51,7 +52,7 @@ export default function() {
 								justifyContent: "center",
 							}}
 						>
-							<ActivityIndicator size="large" color="#275C9C" />
+							<ActivityIndicator size="large" color={ Configuration.SPOTTY_PRIMARY_COLOR } />
 						</View>
 					) : (
 						<ScrollView contentContainerStyle={ styles.container }>

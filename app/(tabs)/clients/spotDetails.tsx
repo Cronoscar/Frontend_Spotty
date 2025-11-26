@@ -7,7 +7,9 @@ import ReviewList from "@/components/ReviewList";
 
 import { SpotDetails } from "@/types/spot";
 
-import SpotImage from "@/assets/images/333.jpg";
+import Configuration from "@/config/constants";
+
+import SpotImage from "@/assets/images/spot.png";
 
 const spotExample: SpotDetails = {
 	id: 1,
@@ -65,7 +67,7 @@ export default function() {
 					marginVertical: 15,
 				}}
 			>
-				<ActivityIndicator size="large" color="#275C9C" />
+				<ActivityIndicator size="large" color={ Configuration.SPOTTY_PRIMARY_COLOR } />
 			</View>
 		) : (
 			<View style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -79,7 +81,7 @@ export default function() {
 				<View style={ styles.spotDetails }>
 					<Text style={ styles.title }>{ spot?.title }</Text>
 					<View style={ styles.spotMeta }>
-						<Ionicons name="star" size={ 13 } color="#275C9C" />
+						<Ionicons name="star" size={ 13 } color={ Configuration.SPOTTY_PRIMARY_COLOR } />
 						<Text> { spot?.stars }</Text>
 						<Text style={{ marginLeft: 10, marginRight: 20, }}>({ spot?.nReviews } Reseñas)</Text>
 						<Ionicons name="location-outline" size={ 15 } color="gray" />
@@ -106,7 +108,7 @@ export default function() {
 							<Text style={ styles.locationContent }>{ spot?.location }</Text>
 						</View>
 						<TouchableOpacity
-							onPress={ () => router.push(`/spotBooking?id=${ id }`) }
+							onPress={ () => router.push(`/clients/spotBooking?id=${ id }`) }
 							style={ styles.button }
 						>
 							<Text style={ styles.buttonText }>Reservar Espacio</Text>
@@ -171,8 +173,8 @@ const styles = StyleSheet.create({
 		marginBottom: 15,
 	},
 	locationFreeSpots: {
-		backgroundColor: "#88CFE7",
-		color: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_SECONDARY_COLOR,
+		color: Configuration.SPOTTY_PRIMARY_COLOR,
 		borderRadius: 15,
 		paddingVertical: 5,
 		paddingHorizontal: 15,
@@ -187,7 +189,7 @@ const styles = StyleSheet.create({
 	},
 	availabilityBarFill: {
 		height: "100%",
-		backgroundColor: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
 		borderRadius: 20,
 		width: "40%",
 		zIndex: 2,
@@ -203,7 +205,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		marginTop: 15,
-		backgroundColor: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
 		alignItems: "center",
 		justifyContent: "center",
 		paddingVertical: 5,

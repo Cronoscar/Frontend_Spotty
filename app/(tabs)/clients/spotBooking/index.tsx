@@ -10,6 +10,10 @@ import { useSpotBooking } from "@/contexts/SpotBookingContext";
 
 import { Spot } from "@/types/spot";
 
+import { useAuthStatus } from "@/hooks/useAuthStatus";
+
+import Configuration from "@/config/constants";
+
 const exampleSpot: Spot = {
 	id: 1,
 	title: "Metro Mall",
@@ -24,6 +28,12 @@ const N_ROWS = 4;
 const N_COLUMNS = 9;
 const SPOTS_STATUS = "101011001010111011010010110111010001";
 
+const SPOT_ROWS: string[] = [
+	"101101",
+	"000010101",
+	"01010101"
+];
+
 export default function() {
 	const [loading, setLoading] = useState(true);
 	const [spot, setSpot] = useState<Spot | null>(null);
@@ -32,6 +42,8 @@ export default function() {
 	const { id } = useLocalSearchParams();
 
 	const { data, setData } = useSpotBooking();
+
+	useAuthStatus();
 
 	useEffect(function() {
 		setTimeout(function() {
@@ -59,7 +71,7 @@ export default function() {
 					marginVertical: 15,
 				}}
 			>
-				<ActivityIndicator size="large" color="#275C9C" />
+				<ActivityIndicator size="large" color={ Configuration.SPOTTY_PRIMARY_COLOR } />
 			</View>
 		);
 	}
@@ -92,15 +104,14 @@ export default function() {
 					<Text>Disponible</Text>
 					<View style={{ ...styles.colorSquare, backgroundColor: "#ef4444", }}></View>
 					<Text>Reservado</Text>
-					<View style={{ ...styles.colorSquare, backgroundColor: "#275C9C", }}></View>
+					<View style={{ ...styles.colorSquare, backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR, }}></View>
 					<Text>Seleccionado</Text>
 				</View>
 				<SpotsGrid
-					spots={ SPOTS_STATUS }
-					nColumns={ N_COLUMNS }
+					rows={ SPOT_ROWS }
 					selectedSpot={ data }
 					setSelectedSpot={ setData }
-					continueAction={ () => router.push("/spotBooking/bookingDate") }
+					continueAction={ () => router.push("/clients/spotBooking/bookingDate") }
 				/>
 			</ScrollView>
 		</SafeAreaView>
@@ -118,8 +129,8 @@ const styles = StyleSheet.create({
 		padding: 15,
 	},
 	backButton: {
-		backgroundColor: "#88CFE7",
-		color: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_SECONDARY_COLOR,
+		color: Configuration.SPOTTY_PRIMARY_COLOR,
 		borderRadius: 100,
 		padding: 10,
 	},

@@ -2,6 +2,7 @@ import { Form } from "@/config/enums";
 import { PaymentMethod } from "./paymentMethod";
 import { Review } from "./review";
 import { Spot } from "./spot";
+import { Place } from "./place";
 
 export type BookingListProps = {
 		bookings: Booking[];
@@ -49,10 +50,9 @@ export type SpotListProps = {
 };
 
 export type SpotGridProps = {
-		spots: string;
-		nColumns: number;
-		selectedSpot: SpotBookingData;
-		setSelectedSpot: (pos: SpotBookingData) => void;
+		rows: string[];
+		selectedSpot?: SpotBookingData;
+		setSelectedSpot?: (pos: SpotBookingData) => void;
 		continueAction?: () => void;
 };
 
@@ -61,6 +61,7 @@ export type RowProps = {
 		rowIdx: number;
 		selected: { x: number; y: number } | null;
 		setSelected: (pos: { x: number; y: number } | null) => void;
+		allowPress: boolean;
 };
 
 export type SpotSquareProps = {
@@ -69,4 +70,52 @@ export type SpotSquareProps = {
 		y: number;
 		selected: { x: number; y: number } | null;
 		setSelected: (pos: { x: number; y: number } | null) => void;
+		allowPress: boolean;
+};
+
+export type FAQItemProps = {
+		title: string;
+		answer: string;
+};
+
+export type PaymentMethodItemProps = {
+		title: string;
+		expirationDate: string;
+		isDefault?: boolean;
+};
+
+export type FAQListProps = {
+		faqs: FAQ[];
+};
+
+export type SelectProps = {
+	selectId: number;
+	name: string;
+	options: string[];
+	filters: Record<number, string>,
+	setFilters: (filters: Record<number, string>) => void;
+}
+
+export type SearchFiltersProps = {
+	filters: Record<number, string>;
+	setFilters: (filters: Record<number, string>) => void;
+};
+
+export type PlaceListProps = {
+	places: Place[];
+};
+
+export type PlaceItemProps = {
+	id: number;
+	title: string;
+	location: string;
+	price: string;
+	availableSpots: number;
+	totalSpots: number;
+};
+
+export type RowConfigurationProps = {
+	rowIndex: number;
+	rows: string[];
+	setRows: (rows: string[]) => void;
 };

@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, useWindowDimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { PaymentMethodItemProps } from "@/types/component";
 
-export default function PaymentMethod({ title, expirationDate, isDefault }) {
+export default function PaymentMethod({ title, expirationDate, isDefault }: PaymentMethodItemProps) {
 	return (
 		<View style={ styles.container }>
 			<Ionicons style={ styles.card } name="card-outline" size={ 35 } />

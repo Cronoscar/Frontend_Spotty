@@ -44,6 +44,15 @@ export default function RegisterForm({ setError, setForm }: RegisterFormProps) {
 				onChangeText={ setPassword }
 				style={ styles.input }
 			/>
+			<Text style={ styles.label }>Contraseña</Text>
+			<TextInput
+				placeholder="Contraseña"
+				secureTextEntry
+				autoCapitalize="none"
+				value={ password }
+				onChangeText={ setPassword }
+				style={ styles.input }
+			/>
 			<View
 				style={{
 					alignItems: "center",

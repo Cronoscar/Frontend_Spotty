@@ -1,4 +1,7 @@
+import { UserRole } from "@/config/enums";
+
 export type Session = {
-		id: number;
-		token: string;
+		id: number | null;
+		token: string | null;
+		role: UserRole;
 };

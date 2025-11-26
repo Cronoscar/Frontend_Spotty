@@ -5,18 +5,26 @@ import { ApiResponse } from "@/types/api";
 import { Session } from "@/types/session";
 import { AuthContextType } from "@/types/context";
 
+import { UserRole } from "@/config/enums";
+
+const defaultSession: Session = {
+	id: null,
+	token: null,
+	role: UserRole.NON_AUTHENTICATED_USER,
+}
+
 const AuthContext = createContext<AuthContextType>({
-	session: null,
+	session: defaultSession,
 	login: async () => Promise<{ ok: false }>,
 	logout: async () => Promise<{ ok: false }>,
 	loadingSession: true,
 } as AuthContextType);
 
-export const AuthProvider = ({ children }: any ) => {
-	const [session, setSession] = useState<Session | null>(null);
+export function AuthProvider({ children }: any ) {
+	const [session, setSession] = useState<Session >(defaultSession);
 	const [loadingSession, setLoadingSession] = useState(false);
 
-	useEffect(() => {
+	useEffect(function () {
 		checkSession();
 	}, []);
 
@@ -25,20 +33,19 @@ export const AuthProvider = ({ children }: any ) => {
 
 		const response: ApiResponse<Session> = await AuthService.getSession();
 
-		if (response.error) {
-			return;
-		}
-
-		if (response.data) setSession( response.data );
 		setLoadingSession(false);
+
+		if (response.error) return;
+
+		response.data && setSession(response.data);
 	}
 
-	async function login( email: string, password: string ): Promise<ApiResponse<null>> {
+	async function login( email: string, password: string ): Promise<ApiResponse<any>> {
 		const res: ApiResponse<Session> = await AuthService.login(email, password);
 
 		if (res?.ok && res.data) {
 			setSession(res.data);
-			return { ok: true };
+			return { ok: true, data: res.data };
 		}
 
 		return { ok: false };
@@ -48,7 +55,7 @@ export const AuthProvider = ({ children }: any ) => {
 		const res = await AuthService.logout();
 
 		if (res?.ok) {
-			setSession(null);
+			setSession(defaultSession);
 			return { ok: true };
 		}
 

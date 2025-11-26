@@ -11,6 +11,8 @@ import UserService from "@/services/UserService";
 import { ApiResponse } from "@/types/api";
 import { User } from "@/types/user";
 
+import Configuration from "@/config/constants";
+
 import ProfilePicture from "@/assets/images/333.jpg";
 
 export default function() {
@@ -27,7 +29,7 @@ export default function() {
 			return;
 		}
 
-		if (response.data) setUser(response?.data);
+		if (response.data) setUser(response.data);
 		setLoading(false);
 	});
 
@@ -100,7 +102,7 @@ export default function() {
 										marginVertical: 15,
 									}}
 								>
-									<ActivityIndicator size="large" color="#275C9C" />
+									<ActivityIndicator size="large" color={ Configuration.SPOTTY_PRIMARY_COLOR } />
 								</View>
 							)
 					}
@@ -113,7 +115,7 @@ export default function() {
 
 const styles = StyleSheet.create({
 	header: {
-		backgroundColor: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
 		borderBottomLeftRadius: 40,
 		borderBottomRightRadius: 40,
 		paddingTop: 50,
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	userItemText: {
-		color: "#275C9C",
+		color: Configuration.SPOTTY_PRIMARY_COLOR,
 		fontSize: 20,
 		fontWeight: "bold",
 	},

@@ -1,10 +1,14 @@
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet, Alert, BackHandler, ScrollView } from "react-native";
+import { View, Text, StyleSheet, BackHandler, ScrollView, Image, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { useState, useEffect } from "react";
+
 import { Form } from "@/config/enums";
+
 import RegisterForm from "@/components/RegisterForm";
 import LoginForm from "@/components/LoginForm";
 import Header from "@/components/Header";
+
+import Logo from "@/assets/images/logo.png";
 
 export default function () {
 	const [form, setForm] = useState(Form.REGISTER);
@@ -19,8 +23,14 @@ export default function () {
 		return () => backHandler.remove();
 	}, []);
 
+	useEffect(function() {
+		if (!error) return;
+
+		Alert.alert("Error", error);
+	}, [error]);
+
 	return (
-		<View style={{ flex: 1, backgroundColor: "#fff" }}>
+		<View style={{ flex: 1, backgroundColor: "#fff", }}>
 			<Header
 				title={
 					form == Form.LOGIN
@@ -29,18 +39,16 @@ export default function () {
 				}
 				backAction={ () => router.replace("/") }
 			/>
-			<View style={ styles.container }>
-				<ScrollView contentContainerStyle={ styles.form }>
+			<ScrollView style={ styles.container }>
+				<Image source={ Logo } style={ styles.logo } />
+				<View style={ styles.form }>
 					{
 						form == Form.LOGIN
 							? <LoginForm setError={ setError } setForm={ setForm }/>
 							: <RegisterForm setError={ setError } setForm={ setForm }/>
 					}
-				</ScrollView>
-				<View style={{ height: 50, }}>
-					{ error && <Text style={ styles.error }>{ error }</Text> }
 				</View>
-			</View>
+			</ScrollView>
 		</View>
 	);
 }
@@ -48,32 +56,29 @@ export default function () {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: "center",
-		width: "70%",
-		alignSelf: "center",
-	},
-	header: {
-		backgroundColor: "#275C9C",
-		borderBottomLeftRadius: 40,
-		borderBottomRightRadius: 40,
-		paddingTop: 70,
-		paddingBottom: 16,
-		paddingHorizontal: 25,
-		alignItems: "center",
-		flexDirection: "row",
-		gap: 10,
 	},
 	form: {
-		marginVertical: "auto",
-		padding: 10,
+		borderColor: "lightgray",
+		borderWidth: 1,
+		borderRadius: 10,
+		padding: 15,
+		margin: 15,
 	},
 	error: {
 		backgroundColor: "red",
 		color: "pink",
-		paddingVertical: 10,
+		paddingVertical: 5,
 		paddingHorizontal: 20,
 		borderRadius: 10,
 		fontSize: 15,
 		fontWeight: "bold",
+	},
+	logo: {
+		width: 250,
+		height: 350,
+		maxHeight: 350,
+		maxWidth: 250,
+		marginVertical: 30,
+		marginHorizontal: "auto",
 	}
 });
