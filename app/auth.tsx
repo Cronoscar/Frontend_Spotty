@@ -60,7 +60,7 @@ export default function () {
 						}}
 					>
 						<Text style={ styles.userTypeTitle }>Usuario</Text>
-						<Text>Reservar espacions</Text>
+						<Text>Reservar espacios</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
 						onPress={ () => setUserType(UserType.COMMERCE) }
@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		margin: 20,
 		gap: 10,
+		marginBottom: 80,
 	},
 	userTypeButton: {
 		flex: 1,

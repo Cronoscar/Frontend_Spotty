@@ -45,6 +45,7 @@ export default function PlaceItem({
 				style={{
 					flexDirection: "row",
 					marginTop: 20,
+					gap: 10,
 				}}
 			>
 				<TouchableOpacity
@@ -103,7 +104,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 7,
 		paddingHorizontal: 20,
 		borderRadius: 10,
-		marginHorizontal: 10,
 		alignItems: "center",
 		justifyContent: "center",
 		flexDirection: "row",

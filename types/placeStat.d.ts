@@ -7,4 +7,6 @@ export type PlaceStats = {
 	avgRating: number,
 	availableSpots: number;
 	totalSpots: number;
+	schedule: string;
+	price: number;
 };
