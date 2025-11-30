@@ -18,4 +18,9 @@ export enum UserRole {
 	NON_AUTHENTICATED_USER = 1,
 	AUTHENTICATED_USER = 2,
 	COMMERCE = 3,
-}
+};
+
+export enum UserType {
+	USER = 1,
+	COMMERCE = 2,
+};

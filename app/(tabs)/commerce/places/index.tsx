@@ -14,6 +14,8 @@ import Configuration from "@/config/constants";
 
 import { Place } from "@/types/place";
 
+const examplePlaces0: Place[] = [];
+
 const examplePlaces: Place[] = [
 	{
 		id: 1,
@@ -22,6 +24,7 @@ const examplePlaces: Place[] = [
 		price: "150.00",
 		availableSpots: 3,
 		totalSpots: 6,
+		schedule: "",
 	},
 	{
 		id: 2,
@@ -30,6 +33,7 @@ const examplePlaces: Place[] = [
 		price: "95.00",
 		availableSpots: 1,
 		totalSpots: 4,
+		schedule: "",
 	},
 	{
 		id: 3,
@@ -38,6 +42,7 @@ const examplePlaces: Place[] = [
 		price: "80.00",
 		availableSpots: 2,
 		totalSpots: 2,
+		schedule: "",
 	},
 	{
 		id: 4,
@@ -46,6 +51,7 @@ const examplePlaces: Place[] = [
 		price: "110.00",
 		availableSpots: 5,
 		totalSpots: 8,
+		schedule: "",
 	},
 	{
 		id: 5,
@@ -54,6 +60,7 @@ const examplePlaces: Place[] = [
 		price: "35.00",
 		availableSpots: 10,
 		totalSpots: 12,
+		schedule: "",
 	},
 ];
 
@@ -210,7 +217,7 @@ const styles = StyleSheet.create({
 	search: {
 		flexDirection: "row",
 		alignItems: "center",
-		marginTop: 10,
+		marginVertical: 10,
 		marginHorizontal: 10,
 		backgroundColor: "lightgray",
 		borderRadius: 20,

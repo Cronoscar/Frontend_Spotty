@@ -5,4 +5,5 @@ export type Place = {
 	price: string;
 	availableSpots: number;
 	totalSpots: number;
+	schedule: string;
 };

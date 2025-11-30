@@ -4,8 +4,6 @@ import { useRouter } from "expo-router";
 
 import { SpotItemProps } from "@/types/component";
 
-import SpotImage from "@/assets/images/location.png";
-
 export default function SpotItem({
 	id,
 	title,
@@ -34,7 +32,7 @@ export default function SpotItem({
 				}}
 			>
 				<Image
-					source={ SpotImage }
+					source={ image }
 					style={{
 						...styles.spotImage,
 						maxHeight: height * 0.15

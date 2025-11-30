@@ -14,7 +14,8 @@ export default function PlaceItem({
 	price,
 	availableSpots,
 	totalSpots
-}: PlaceItemProps) {
+}: PlaceItemProps
+) {
 	return (
 		<View style={ styles.place }>
 			<View style={ styles.header }>

@@ -119,3 +119,15 @@ export type RowConfigurationProps = {
 	rows: string[];
 	setRows: (rows: string[]) => void;
 };
+
+export type PlaceStatItemProps = {
+	id: number;
+	title: string;
+	location: string;
+	price: string;
+	availableSpots: number;
+	totalSpots: number;
+	schedule: string;
+};
+
+export type PlaceStatListProps = PlaceListProps;

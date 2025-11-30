@@ -8,6 +8,37 @@ import { useSpotBooking } from "@/contexts/SpotBookingContext";
 
 import Configuration from "@/config/constants";
 
+function formatDate(text: string) {
+	let cleaned = text.replace(/[^\d]/g, "");
+
+	if (cleaned.length > 2) cleaned = cleaned.slice(0, 2) + "/" + cleaned.slice(2);
+	if (cleaned.length > 5) cleaned = cleaned.slice(0, 5) + "/" + cleaned.slice(5, 9);
+
+	return cleaned.slice(0, 10);
+}
+
+function formatTime(text: string) {
+	let cleaned = text.toUpperCase().replace(/[^0-9APM]/g, "");
+
+	// Insertar :
+	if (cleaned.length > 2 && cleaned[2] !== ":") {
+		cleaned = cleaned.slice(0, 2) + ":" + cleaned.slice(2);
+	}
+
+	// AM/PM
+	if (cleaned.length > 5) {
+		let time = cleaned.slice(0, 5); // HH:MM
+		let suffix = cleaned.slice(5).replace(/[^APM]/g, "");
+
+		if (suffix.startsWith("A")) suffix = "AM";
+		if (suffix.startsWith("P")) suffix = "PM";
+
+		cleaned = time + " " + suffix;
+	}
+
+	return cleaned.slice(0, 8);
+}
+
 export default function() {
 	const { data, setData } = useSpotBooking();
 
@@ -57,69 +88,52 @@ export default function() {
 					<Text style={ styles.spotTitle }>{ data?.title }</Text>
 					<Text style={ styles.spotLocation }>{ data?.location }</Text>
 				</View>
+				{/* FORM */}
 				<View style={ styles.form }>
 					<Text>Fecha</Text>
 					<View style={ styles.input }>
-						<Ionicons
-							name="calendar-outline"
-							size={ 20 }
-						/>
+						<Ionicons name="calendar-outline" size={20} />
 						<TextInput
-							style={{ flex: 1, marginLeft: 5, }}
-							value={ date }
-							onChangeText={ setDate }
+							style={{ flex: 1, marginLeft: 5 }}
+							value={date}
+							onChangeText={txt => setDate(formatDate(txt))}
 							placeholder="mm/dd/yyyy"
 							keyboardType="number-pad"
 							maxLength={10}
 						/>
 					</View>
-					<View style={{ flexDirection: "row", gap: 25, marginTop: 15, }}>
+				
+					<View style={{ flexDirection: "row", gap: 25, marginTop: 15 }}>
 						<View style={{ flex: 1 }}>
 							<Text>Hora inicio</Text>
 							<View style={ styles.input }>
-								<Ionicons
-									name="time-outline"
-									size={ 20 }
-								/>
+								<Ionicons name="time-outline" size={20} />
 								<TextInput
-									style={{ flex: 1, marginLeft: 5, }}
-									value={ startTime }
-									onChangeText={ setStartTime }
-									placeholder="--:-- --"
+									style={{ flex: 1, marginLeft: 5 }}
+									value={startTime}
+									onChangeText={txt => setStartTime(formatTime(txt))}
+									placeholder="08:30 AM"
 									keyboardType="number-pad"
-									maxLength={ 7 }
+									maxLength={8}
 								/>
 							</View>
 						</View>
+				
 						<View style={{ flex: 1 }}>
-							<Text>Hora Fin</Text>
+							<Text>Hora fin</Text>
 							<View style={ styles.input }>
-								<Ionicons
-									name="time-outline"
-									size={ 20 }
-								/>
+								<Ionicons name="time-outline" size={20} />
 								<TextInput
-									style={{ flex: 1, marginLeft: 5, }}
-									value={ endTime }
-									onChangeText={ setEndTime }
-									placeholder="--:-- --"
+									style={{ flex: 1, marginLeft: 5 }}
+									value={endTime}
+									onChangeText={txt => setEndTime(formatTime(txt))}
+									placeholder="08:30 PM"
 									keyboardType="number-pad"
-									maxLength={ 7 }
+									maxLength={8}
 								/>
 							</View>
 						</View>
 					</View>
-					{
-						date && startTime && endTime && (
-							<View style={ styles.amountContainer }>
-								<View style={{ flex: 2, }}>
-									<Text style={{ fontWeight: "bold" }}>Costo Estimado</Text>
-									<Text style={{ fontSize: 10, fontWeight: "bold", color: "gray" }} >Basado en 2 horas</Text>
-								</View>
-								<Text style={ styles.amountLabel }>${ total }</Text>
-							</View>
-						)
-					}
 				</View>
 				{
 					date && startTime && endTime && (

@@ -25,9 +25,10 @@ export default function() {
 		>
 			{
 				getTabs()
-					.map(function(tab: Tab) {
-						return (
+					.map((tab: Tab) => ({ ...tab, show: tab.roles.includes(session.role) }))
+					.map((tab: Tab, idx: number) => (
 							<Tabs.Screen
+								key={ idx }
 								name={ tab.name }
 								options={{
 									title: tab.title,
@@ -37,8 +38,8 @@ export default function() {
 									...( tab.show ? {} : { href: null } )
 								}}
 							/>
-						);
-					})
+						)
+					)
 			}
 		</Tabs>
 	);
