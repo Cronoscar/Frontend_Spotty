@@ -7,6 +7,11 @@ import { Spot } from "@/types/spot";
 
 import Configuration from "@/config/constants";
 
+import SpotImage from "@/assets/images/location.png";
+import SpotImage1 from "@/assets/images/commerce.png";
+import SpotImage0 from "@/assets/images/spot0.png";
+
+
 const exampleSpots: Spot[] = [
 	{
 		id: 1,
@@ -16,17 +21,17 @@ const exampleSpots: Spot[] = [
 		distance: 1.2, // km
 		stars: 4.7,
 		price: 35,
-		image: "",
+		image: SpotImage,
 	},
 	{
 		id: 2,
-		title: "Mall Multiplaza (Tegucigalpa)",
+		title: "Mall Premiere (Tegucigalpa)",
 		location: "Blv. Suyapa",
 		freeSpots: 10,
 		distance: 1.2, // km
 		stars: 4.7,
 		price: 35,
-		image: "",
+		image: SpotImage1,
 	},
 	{
 		id: 3,
@@ -36,7 +41,7 @@ const exampleSpots: Spot[] = [
 		distance: 1.2, // km
 		stars: 4.7,
 		price: 35,
-		image: "",
+		image: SpotImage0,
 	},
 	{
 		id: 4,
@@ -54,8 +59,8 @@ export default function() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [spots, setSpots] = useState<Spot[]>([]);
 
-	useEffect(() => {
-		setTimeout(() => {
+	useEffect(function() {
+		setTimeout(function() {
 			setSpots( exampleSpots );
 			setLoading(false);
 		}, 3000);

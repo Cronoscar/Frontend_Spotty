@@ -6,6 +6,8 @@ import { useRouter } from "expo-router";
 
 import { LoginFormProps } from "@/types/component";
 
+import Configuration from "@/config/constants";
+
 export default function LoginForm({ setError, setForm }: LoginFormProps) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		borderRadius: 10,
-		backgroundColor: "#275C9C",
+		backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
 		paddingVertical: 10,
 		alignItems: "center",
 		width: "60%"

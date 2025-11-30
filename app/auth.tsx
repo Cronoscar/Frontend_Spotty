@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, BackHandler, ScrollView, Image, Alert } from "react-native";
+import { View, Text, StyleSheet, BackHandler, ScrollView, Image, Alert, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { useState, useEffect } from "react";
 
-import { Form } from "@/config/enums";
+import { Form, UserType } from "@/config/enums";
 
 import RegisterForm from "@/components/RegisterForm";
 import LoginForm from "@/components/LoginForm";
@@ -10,8 +10,11 @@ import Header from "@/components/Header";
 
 import Logo from "@/assets/images/logo.png";
 
+import Configuration from "@/config/constants";
+
 export default function () {
-	const [form, setForm] = useState(Form.REGISTER);
+	const [form, setForm] = useState<Form>(Form.REGISTER);
+	const [userType, setUserType] = useState<UserType>(UserType.USER);
 	const [error, setError] = useState("");
 	const router = useRouter();
 
@@ -48,6 +51,28 @@ export default function () {
 							: <RegisterForm setError={ setError } setForm={ setForm }/>
 					}
 				</View>
+				<View style={ styles.userTypeButtons }>
+					<TouchableOpacity
+						onPress={ () => setUserType(UserType.USER) }
+						style={{
+							...styles.userTypeButton,
+							...( userType === UserType.COMMERCE ? { backgroundColor: "#f5f5f5", borderColor: "lightgray" } : {} )
+						}}
+					>
+						<Text style={ styles.userTypeTitle }>Usuario</Text>
+						<Text>Reservar espacions</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						onPress={ () => setUserType(UserType.COMMERCE) }
+						style={{
+							...styles.userTypeButton,
+							...( userType === UserType.USER ? { backgroundColor: "#f5f5f5", borderColor: "lightgray" } : {} )
+						}}
+					>
+						<Text style={ styles.userTypeTitle }>Comercio</Text>
+						<Text>Gestionar parqueo</Text>
+					</TouchableOpacity>
+				</View>
 			</ScrollView>
 		</View>
 	);
@@ -80,5 +105,26 @@ const styles = StyleSheet.create({
 		maxWidth: 250,
 		marginVertical: 30,
 		marginHorizontal: "auto",
+	},
+	userTypeButtons: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+		flexDirection: "row",
+		margin: 20,
+		gap: 10,
+	},
+	userTypeButton: {
+		flex: 1,
+		alignItems: "center",
+		padding: 10,
+		borderRadius: 10,
+		borderWidth: 2,
+		borderColor: Configuration.SPOTTY_PRIMARY_COLOR,
+		backgroundColor: Configuration.SPOTTY_SECONDARY_COLOR,
+	},
+	userTypeTitle: {
+		fontWeight: "bold",
+		fontSize: 18,
 	}
 });

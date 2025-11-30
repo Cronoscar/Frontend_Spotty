@@ -15,7 +15,7 @@ const exampleFilters: Filter[] = [
 	{
 		id: 2,
 		label: "Tipo de lugar",
-		options: ["Casa", "Apartamento", "Oficina"],
+		options: ["Centro Comercial", "Aeropuerto", "Universidad", "Restaurante", "Hospital"]
 	},
 	{
 		id: 3,

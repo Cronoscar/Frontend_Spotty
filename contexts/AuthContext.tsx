@@ -21,7 +21,7 @@ const AuthContext = createContext<AuthContextType>({
 } as AuthContextType);
 
 export function AuthProvider({ children }: any ) {
-	const [session, setSession] = useState<Session >(defaultSession);
+	const [session, setSession] = useState<Session>(defaultSession);
 	const [loadingSession, setLoadingSession] = useState(false);
 
 	useEffect(function () {
