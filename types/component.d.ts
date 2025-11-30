@@ -3,6 +3,7 @@ import { PaymentMethod } from "./paymentMethod";
 import { Review } from "./review";
 import { Spot } from "./spot";
 import { Place } from "./place";
+import { BookingCommerce } from "./booking";
 
 export type BookingListProps = {
 		bookings: Booking[];
@@ -131,3 +132,7 @@ export type PlaceStatItemProps = {
 };
 
 export type PlaceStatListProps = PlaceListProps;
+
+export type BookingCommerceListProps = {
+	bookings: BookingCommerce[];
+};

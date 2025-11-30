@@ -14,9 +14,11 @@ const exampleStats: PlaceStats = {
 	location: "Col. Las Brisas",
 	totalBookings: 100,
 	totalIncome: 2112331,
-	avgRating: 4.0,
+	avgRating: 4.8,
 	availableSpots: 15,
 	totalSpots: 25,
+	schedule: "08:30 AM - 1:30 PM",
+	price: 10,
 };
 
 export default function() {
@@ -79,23 +81,46 @@ export default function() {
 				{/*  */}
 				<View style={ statCardStyle.container }>
 					<Ionicons name="star-outline" style={{ ...statCardStyle.icon, color: Configuration.SPOTTY_SECONDARY_COLOR, backgroundColor: "#fff" }} />
-					<Text>Valoracion promedio</Text>
+					<Text>Valoración promedio</Text>
 					<View style={{ flexDirection: "row" }}>
 						<Text style={{ ...statCardStyle.statValue, marginRight: 10, }}>
 							{ stats.avgRating }
 						</Text>
 						<View style={{ flexDirection: "row", alignItems: "center" }}>
-							{ [...Array(Math.floor(stats.avgRating)).keys()].map(a => <Ionicons name="star" color={ Configuration.SPOTTY_SECONDARY_COLOR } size={ 20 } />) }
+							{
+								[...Array(Math.floor(stats.avgRating)).keys()]
+									.map((_, idx) => (
+										<Ionicons key={ idx } name="star" color={ Configuration.SPOTTY_SECONDARY_COLOR } size={ 20 } />
+									))
+							}
 						</View>
 					</View>
 				</View>
 				{/*  */}
 				<View style={ statCardStyle.container }>
 					<Ionicons name="location-outline" style={{ ...statCardStyle.icon, color: Configuration.SPOTTY_SECONDARY_COLOR, backgroundColor: "#fff" }} />
-					<Text>Ocupacion actual</Text>
+					<Text>Ocupación actual</Text>
 					<Text style={ statCardStyle.statValue }>{ stats.totalSpots - stats.availableSpots }/{ stats.totalSpots }</Text>
 				</View>
 				{/*  */}
+				<View style={ styles.placeConfig }>
+					<Text style={{ fontWeight: "bold", fontSize: 20, }}>Configuración</Text>
+					<View style={ styles.placeConfigItem }>
+						<Text style={ styles.placeConfigItemText }>Precio por hora</Text>
+						<Text style={ styles.placeConfigItemText }>{ new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", }).format(stats.price) }</Text>
+					</View>
+					<View style={ styles.placeConfigItem }>
+						<Text style={ styles.placeConfigItemText }>Horario</Text>
+						<View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+							<Ionicons name="time-outline" style={ styles.placeConfigItemText} />
+							<Text style={ styles.placeConfigItemText }>{ stats.schedule }</Text>
+						</View>
+					</View>
+					<View style={ styles.placeConfigItem }>
+						<Text style={ styles.placeConfigItemText }>Total espacios</Text>
+						<Text style={ styles.placeConfigItemText }>{ stats.totalSpots }</Text>
+					</View>
+				</View>
 			</ScrollView>
 		</SafeAreaView>
 	);
@@ -115,7 +140,6 @@ const styles = StyleSheet.create({
 		padding: 10,
 	},
 	container: {
-		flex: 1,
 		paddingHorizontal: 15,
 		paddingVertical: 10,
 	},
@@ -127,6 +151,25 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		marginBottom: 20,
+	},
+	placeConfig: {
+		paddingVertical: 15,
+		paddingHorizontal: 25,
+		borderColor: "gray",
+		borderWidth: 1,
+		borderRadius: 10,
+		marginTop: 25,
+		marginHorizontal: 15,
+		backgroundColor: "#f5f5f5",
+	},
+	placeConfigItem: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		marginVertical: 5,
+		alignItems: "center"
+	},
+	placeConfigItemText: {
+		fontSize: 13,
 	},
 });
 

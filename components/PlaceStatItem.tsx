@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row"
 	},
 	image: {
+		maxHeight: 100,
 		maxWidth: "40%",
 		borderRadius: 10,
 	},
