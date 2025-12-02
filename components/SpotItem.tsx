@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
 	},
 	spotImage: {
 		width: "100%",
-		maxHeight: 50,
+		height: 150,
 		marginBottom: 20,
 		// borderRadius: 10,
 	},
