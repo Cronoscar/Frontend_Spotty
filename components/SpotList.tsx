@@ -9,17 +9,17 @@ const SpotList = ({ spots }: SpotListProps) => {
 			<FlatList
 				contentContainerStyle={ styles.content }
 				data={ spots }
-				keyExtractor={ ( spot ) => spot.id.toString() }
+				keyExtractor={ ( spot ) => spot.ID_Sucursal }
 				renderItem={({ item }) => (
 					<SpotItem
-						id={ item.id }
-						title={ item.title }
-						location={ item.location }
-						freeSpots={ item.freeSpots }
-						distance={ item.distance }
-						stars={ item.stars }
-						price={ item.price }
-						image={ item.image }
+						id={ item.ID_Sucursal }
+						title={ item.Nombre }
+						location={ item.Ubicacion }
+						freeSpots={ item.Espacios_Disponibles }
+						distance={ null }
+						stars={ 5 }
+						price={ item.Precio_parqueo }
+						image={ "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgVu2z-1Ryx8vhwB99z6MuM6YMA5463fe-sQ&s" }
 					/>
 				)}
 			/>

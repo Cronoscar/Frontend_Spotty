@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
 import { useState, useEffect } from "react";
-
+import BranchService from "@/services/BranchService";
 import SpotList from "@/components/SpotList";
 
 import { Spot } from "@/types/spot";
@@ -10,60 +10,72 @@ import Configuration from "@/config/constants";
 import SpotImage from "@/assets/images/location.png";
 import SpotImage1 from "@/assets/images/commerce.png";
 import SpotImage0 from "@/assets/images/spot0.png";
+import useApi from "@/utils/useApi";
 
 
-const exampleSpots: Spot[] = [
-	{
-		id: 1,
-		title: "Mall Multiplaza (Tegucigalpa)",
-		location: "Blv. Suyapa",
-		freeSpots: 10,
-		distance: 1.2, // km
-		stars: 4.7,
-		price: 35,
-		image: SpotImage,
-	},
-	{
-		id: 2,
-		title: "Mall Premiere (Tegucigalpa)",
-		location: "Blv. Suyapa",
-		freeSpots: 10,
-		distance: 1.2, // km
-		stars: 4.7,
-		price: 35,
-		image: SpotImage1,
-	},
-	{
-		id: 3,
-		title: "Mall Multiplaza (Tegucigalpa)",
-		location: "Blv. Suyapa",
-		freeSpots: 10,
-		distance: 1.2, // km
-		stars: 4.7,
-		price: 35,
-		image: SpotImage0,
-	},
-	{
-		id: 4,
-		title: "Mall Multiplaza (Tegucigalpa)",
-		location: "Blv. Suyapa",
-		freeSpots: 10,
-		distance: 1.2, // km
-		stars: 2.7,
-		price: 35,
-		image: "",
-	},
-];
+// const exampleSpots: Spot[] = [
+// 	{
+// 		id: 1,
+// 		title: "Mall Multiplaza (Tegucigalpa)",
+// 		location: "Blv. Suyapa",
+// 		freeSpots: 10,
+// 		distance: 1.2, // km
+// 		stars: 4.7,
+// 		price: 35,
+// 		image: SpotImage,
+// 	},
+// 	{
+// 		id: 2,
+// 		title: "Mall Premiere (Tegucigalpa)",
+// 		location: "Blv. Suyapa",
+// 		freeSpots: 10,
+// 		distance: 1.2, // km
+// 		stars: 4.7,
+// 		price: 35,
+// 		image: SpotImage1,
+// 	},
+// 	{
+// 		id: 3,
+// 		title: "Mall Multiplaza (Tegucigalpa)",
+// 		location: "Blv. Suyapa",
+// 		freeSpots: 10,
+// 		distance: 1.2, // km
+// 		stars: 4.7,
+// 		price: 35,
+// 		image: SpotImage0,
+// 	},
+// 	{
+// 		id: 4,
+// 		title: "Mall Multiplaza (Tegucigalpa)",
+// 		location: "Blv. Suyapa",
+// 		freeSpots: 10,
+// 		distance: 1.2, // km
+// 		stars: 2.7,
+// 		price: 35,
+// 		image: "",
+// 	},
+// ];
 
-export default function() {
+export default function Index() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [spots, setSpots] = useState<Spot[]>([]);
+	const api = useApi();
 
 	useEffect(function() {
-		setTimeout(function() {
-			setSpots( exampleSpots );
+		const retreiveData = async () => {
+			const response = await api.get('/api/branches');
+			setSpots(response.data.data);
 			setLoading(false);
-		}, 3000);
+			console.log(response.data.data)
+			console.log(spots)
+			console.log(loading)
+		}
+		retreiveData();
+		
+		// setTimeout(function() {
+		// 	setSpots( exampleSpots );
+		// 	setLoading(false);
+		// }, 3000);
 	}, []);
 
 	return (

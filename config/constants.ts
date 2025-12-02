@@ -4,7 +4,7 @@ import { PaymentMethodOptionType } from "@/types/paymentMethod";
 const Configuration = {
 	SPOTTY_PRIMARY_COLOR: "#275C9C",
 	SPOTTY_SECONDARY_COLOR: "#88CFE7",
-	API_BASE_URL: "",
+	API_BASE_URL: "https://spottyapp-aedmgmczcke8d5c4.canadacentral-01.azurewebsites.net",
 	paymentMethods: [
 		{
 			type: PaymentMethod.CREDIT_CARD,
