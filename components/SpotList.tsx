@@ -19,7 +19,8 @@ const SpotList = ({ spots }: SpotListProps) => {
 						distance={ null }
 						stars={ 5 }
 						price={ item.Precio_parqueo }
-						image={ "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgVu2z-1Ryx8vhwB99z6MuM6YMA5463fe-sQ&s" }
+						image={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgVu2z-1Ryx8vhwB99z6MuM6YMA5463fe-sQ&s" }}
+
 					/>
 				)}
 			/>
