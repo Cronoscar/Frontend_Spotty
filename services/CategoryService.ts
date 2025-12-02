@@ -6,7 +6,10 @@ import Configuration from "@/config/constants";
 class CategoryService{
 
     static async getAllCategories(){
-        const result= await fetch(``)
+        // const { api } = useApi();
+        // const result = await fetch(``);
+        // const data = await result.json();
+        // return data;
         
     }
 

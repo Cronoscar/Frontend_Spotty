@@ -47,8 +47,20 @@ export default function () {
 				<View style={ styles.form }>
 					{
 						form == Form.LOGIN
-							? <LoginForm setError={ setError } setForm={ setForm }/>
-							: <RegisterForm setError={ setError } setForm={ setForm }/>
+							? (
+								<LoginForm
+									setError={ setError }
+									setForm={ setForm }
+								/>
+							)
+							: (
+								<RegisterForm
+									setError={ setError }
+									setForm={ setForm }
+									userType={ userType }   // <-- AQUÍ ESTABA EL FALLO
+								/>
+							)
+
 					}
 				</View>
 				<View style={ styles.userTypeButtons }>

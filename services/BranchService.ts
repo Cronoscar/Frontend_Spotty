@@ -4,12 +4,12 @@ import useApi from "@/utils/useApi";
 import Configuration from "@/config/constants";
 
 class BranchService {
-    static async getAllBranches(){
-        const { api } = useApi();
-        const result = await fetch(``);
-        const data = await result.json();
-        return data;
-    }
+    // static async getAllBranches(){
+    //     const { api } = useApi();
+    //     const result = await fetch(``);
+    //     const data = await result.json();
+    //     return data;
+    // }
 }
 
 export default BranchService;
