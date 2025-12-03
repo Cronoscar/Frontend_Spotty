@@ -57,7 +57,7 @@ export default function () {
 								<RegisterForm
 									setError={ setError }
 									setForm={ setForm }
-									userType={ userType }   // <-- AQUÍ ESTABA EL FALLO
+									userType={ userType }  
 								/>
 							)
 

@@ -1,10 +1,18 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { Form, UserType } from "@/config/enums";
 import { useState } from "react";
+import { useRouter } from "expo-router";
+
 
 import { RegisterFormProps } from "@/types/component";
+import useApi from "@/utils/useApi";
+
+import Toast from "react-native-toast-message";
+
 
 export default function RegisterForm({ setError, setForm, userType }: RegisterFormProps) {
+const api = useApi();
+const router = useRouter();
 
     // FORM DE USUARIO
     const [uName, setUName] = useState("");
@@ -25,11 +33,13 @@ export default function RegisterForm({ setError, setForm, userType }: RegisterFo
     const [commerceName, setCommerceName] = useState("");
     const [commerceRTN, setCommerceRTN] = useState("");
 
-    function handleRegister() {
+async function handleRegister() {
+    try {
 
         // 🌟 FORMULARIO DE USUARIO
         if (userType === UserType.USER) {
-            const output = {
+
+            const payload = {
                 person: {
                     name: uName,
                     surname: uSurname,
@@ -42,12 +52,19 @@ export default function RegisterForm({ setError, setForm, userType }: RegisterFo
                 }
             };
 
-            console.log("USER JSON OUTPUT:", output);
+            const response = await api.post("/api/customers", payload);
+
+            Toast.show({
+                type: "success",
+                text1: "Usuario registrado",
+                text2: "Tu cuenta ha sido creada",
+            });
+
             return;
         }
 
         // 🌟 FORMULARIO DE COMERCIO
-        const output = {
+        const payload = {
             ceodata: {
                 person: {
                     name: ceoName,
@@ -68,8 +85,29 @@ export default function RegisterForm({ setError, setForm, userType }: RegisterFo
             }
         };
 
-        console.log("COMMERCE JSON OUTPUT:", output);
+        const response = await api.post("/api/CEO/register", payload);
+
+        Toast.show({
+            type: "success",
+            text1: "Comercio registrado",
+            text2: "Redirigiendo al panel...",
+        });
+
+        // ⏳ pequeña pausa para que el usuario vea el toast
+        setTimeout(() => {
+            router.replace("/commerce/places");
+        }, 1200);
+
+    } catch (err: any) {
+
+        Toast.show({
+            type: "error",
+            text1: "Error en registro",
+            text2: err.response?.data?.message ?? "Intenta nuevamente",
+        });
     }
+}
+
 
     return (
         <>

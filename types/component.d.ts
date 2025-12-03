@@ -21,6 +21,7 @@ export type PaymentMethodListProps = {
 export type RegisterFormProps = {
 		setError: (error: string) => void;
 		setForm: (form: Form) => void;
+		userType: number;
 };
 
 export type ReviewItemProps = {
