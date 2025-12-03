@@ -1,3 +1,4 @@
+
 export type Place = {
 	id: number;
 	title: string;
@@ -6,4 +7,5 @@ export type Place = {
 	availableSpots: number;
 	totalSpots: number;
 	schedule: string;
+	commerceId?: number; 
 };

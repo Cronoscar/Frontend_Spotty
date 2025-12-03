@@ -104,16 +104,20 @@ export type SearchFiltersProps = {
 };
 
 export type PlaceListProps = {
-	places: Place[];
+    places: Place[];
+    onRefresh?: () => void; 
 };
 
+
 export type PlaceItemProps = {
-	id: number;
-	title: string;
-	location: string;
-	price: string;
-	availableSpots: number;
-	totalSpots: number;
+    id: number;
+    title: string;
+    location: string;
+    price: string;
+    availableSpots: number;
+    totalSpots: number;
+    schedule?: string; // Agregar schedule opcional
+    commerceId?: number; // Agregar commerceId opcional
 };
 
 export type RowConfigurationProps = {
