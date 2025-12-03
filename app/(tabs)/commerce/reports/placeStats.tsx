@@ -121,6 +121,53 @@ export default function() {
 						<Text style={ styles.placeConfigItemText }>{ stats.totalSpots }</Text>
 					</View>
 				</View>
+				{/* --- COBRAR INGRESOS --- */}
+<View style={ withdrawStyles.container }>
+    
+    <View style={ withdrawStyles.header }>
+        <Ionicons name="wallet-outline" size={26} color="#4CAF50" />
+        <View>
+            <Text style={ withdrawStyles.headerTitle }>Cobrar Ingresos</Text>
+            <Text style={ withdrawStyles.headerSubtitle }>Retira tus ganancias a tu cuenta bancaria</Text>
+        </View>
+    </View>
+
+    {/* Datos */}
+    <View style={ withdrawStyles.row }>
+        <Text style={ withdrawStyles.label }>Ingresos generados</Text>
+        <Text style={ withdrawStyles.value }>
+            { new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(stats.totalIncome) }
+        </Text>
+    </View>
+
+    <View style={ withdrawStyles.row }>
+        <Text style={ withdrawStyles.label }>Comisión Spotty (5%)</Text>
+        <Text style={ withdrawStyles.commission }>
+            -{ new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(stats.totalIncome * 0.05) }
+        </Text>
+    </View>
+
+    {/* Monto final */}
+    <Text style={ withdrawStyles.receiveLabel }>Monto a recibir</Text>
+    <Text style={ withdrawStyles.receiveValue }>
+        { new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(stats.totalIncome * 0.95) }
+    </Text>
+
+    {/* Botón */}
+    <TouchableOpacity style={ withdrawStyles.button }>
+        <Ionicons name="card-outline" size={20} color="#fff" />
+        <Text style={ withdrawStyles.buttonText }>
+            Cobrar { new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(stats.totalIncome * 0.95) }
+        </Text>
+    </TouchableOpacity>
+
+    <View style={ withdrawStyles.footer }>
+        <Ionicons name="checkmark-circle" size={18} color="green" />
+        <Text style={ withdrawStyles.footerText }>Transferencia en 2–3 días hábiles</Text>
+    </View>
+
+</View>
+
 			</ScrollView>
 		</SafeAreaView>
 	);
@@ -174,25 +221,109 @@ const styles = StyleSheet.create({
 });
 
 const statCardStyle = StyleSheet.create({
-	container: {
-		paddingVertical: 15,
-		paddingHorizontal: 25,
-		borderColor: "gray",
-		borderWidth: 1,
-		borderRadius: 10,
-		marginBottom: 10,
-		marginHorizontal: 15,
-		backgroundColor: "#f5f5f5",
-	},
-	icon: {
-		fontSize: 20,
-		padding: 10,
-		margin: 5,
-		borderRadius: 100,
-		alignSelf: "flex-start"
-	},
-	statValue: {
-		fontWeight: "bold",
-		fontSize: 25,
-	}
+    container: {
+        paddingVertical: 15,
+        paddingHorizontal: 25,
+        borderColor: "gray",
+        borderWidth: 1,
+        borderRadius: 10,
+        marginBottom: 10,
+        marginHorizontal: 15,
+        backgroundColor: "#f5f5f5",
+    },
+    icon: {
+        fontSize: 20,
+        padding: 10,
+        margin: 5,
+        borderRadius: 100,
+        alignSelf: "flex-start"
+    },
+    statValue: {
+        fontWeight: "bold",
+        fontSize: 25,
+    }
+}); 
+
+	const withdrawStyles = StyleSheet.create({
+    container: {
+        borderWidth: 1,
+        borderColor: "#d9ead3",
+        backgroundColor: "#f1f8f5",
+        borderRadius: 12,
+        padding: 20,
+        marginHorizontal: 15,
+        marginTop: 25,
+        marginBottom: 50,
+    },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 15,
+        gap: 10
+    },
+    headerTitle: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "#2e7d32",
+    },
+    headerSubtitle: {
+        fontSize: 12,
+        color: "#555",
+    },
+    row: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginVertical: 6,
+    },
+    label: {
+        fontSize: 14,
+        color: "#333"
+    },
+    value: {
+        fontSize: 14,
+        fontWeight: "bold",
+        color: "#000"
+    },
+    commission: {
+        fontSize: 14,
+        color: "red",
+        fontWeight: "600"
+    },
+    receiveLabel: {
+        marginTop: 15,
+        fontSize: 14,
+        fontWeight: "bold",
+        color: "#333"
+    },
+    receiveValue: {
+        fontSize: 24,
+        color: "#2e7d32",
+        fontWeight: "bold",
+        marginBottom: 15,
+    },
+    button: {
+        backgroundColor: "#1F3C88",
+        paddingVertical: 15,
+        borderRadius: 10,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 10
+    },
+    buttonText: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+    footer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 10,
+        gap: 5
+    },
+    footerText: {
+        color: "green",
+        fontSize: 12
+    }
 });
+

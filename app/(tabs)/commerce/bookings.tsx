@@ -87,14 +87,31 @@ export default function() {
 		);
 	}
 	return(
-		<SafeAreaView style={ styles.safeArea }>
-			<Text style={{ fontSize: 23, fontWeight: "bold" }}>Reservas activas</Text>
-			<Text style={{ marginTop: 5, fontSize: 14, }}>{ totalBookings } espacios reservados en total</Text>
-			<View style={ styles.bookings }>
-				<BookingCommerceList bookings={ bookings } />
-			</View>
-		</SafeAreaView>
-	);
+  <SafeAreaView style={ styles.safeArea }>
+    <Text style={{ fontSize: 23, fontWeight: "bold" }}>Reservas activas</Text>
+    <Text style={{ marginTop: 5, fontSize: 14 }}>{ totalBookings } espacios reservados en total</Text>
+
+    {/* Botones de QR */}
+    <View style={styles.scanContainer}>
+      <TouchableOpacity style={styles.scanButtonPrimary}>
+        <Ionicons name="log-in-outline" size={22} color="#fff" />
+        <Text style={styles.scanButtonText}>Registrar Entrada</Text>
+        <Text style={styles.scanButtonSubText}>Escanear QR</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.scanButtonSecondary}>
+        <Ionicons name="log-out-outline" size={22} color={Configuration.SPOTTY_PRIMARY_COLOR} />
+        <Text style={styles.scanButtonTextSecondary}>Registrar Salida</Text>
+        <Text style={styles.scanButtonSubTextSecondary}>Escanear QR</Text>
+      </TouchableOpacity>
+    </View>
+
+    <View style={ styles.bookings }>
+      <BookingCommerceList bookings={ bookings } />
+    </View>
+  </SafeAreaView>
+);
+
 }
 
 
@@ -108,5 +125,55 @@ const styles = StyleSheet.create({
 	bookings: {
 		flex: 1,
 		marginTop: 10,
-	},
+	},scanContainer: {
+  flexDirection: "row",
+  marginTop: 20,
+  marginBottom: 15,
+  gap: 10,
+},
+
+scanButtonPrimary: {
+  flex: 1,
+  backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
+  paddingVertical: 18,
+  borderRadius: 12,
+  justifyContent: "center",
+  alignItems: "center",
+},
+
+scanButtonSecondary: {
+  flex: 1,
+  backgroundColor: "#e8eef5",
+  paddingVertical: 18,
+  borderRadius: 12,
+  justifyContent: "center",
+  alignItems: "center",
+  borderWidth: 1,
+  borderColor: Configuration.SPOTTY_PRIMARY_COLOR,
+},
+
+scanButtonText: {
+  color: "#fff",
+  fontSize: 16,
+  fontWeight: "bold",
+  marginTop: 5,
+},
+
+scanButtonSubText: {
+  color: "#dbe6ff",
+  fontSize: 13,
+},
+
+scanButtonTextSecondary: {
+  color: Configuration.SPOTTY_PRIMARY_COLOR,
+  fontSize: 16,
+  fontWeight: "bold",
+  marginTop: 5,
+},
+
+scanButtonSubTextSecondary: {
+  color: Configuration.SPOTTY_PRIMARY_COLOR,
+  fontSize: 13,
+},
+
 });
