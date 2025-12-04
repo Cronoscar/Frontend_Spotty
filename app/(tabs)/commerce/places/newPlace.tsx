@@ -28,6 +28,8 @@ export default function() {
 	// 1️⃣ CREAR SUCURSAL
 	// ---------------------------------------------------
 	async function createBranch() {
+		const local = localStorage.getItem('session');
+		const data= JSON.parse(local || '{}');
 		try {
 			const body = {
 				nameBranch: name,
@@ -36,7 +38,7 @@ export default function() {
 				hourlyPrice: Number(price),
 				totalSpots: spots,
 				parkingTimeLimit: 24,
-				commerceID: 1
+				commerceID: data.userData.commerce.ID_Comercio
 			};
 
 			const res = await axios.post(

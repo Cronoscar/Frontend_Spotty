@@ -1,5 +1,14 @@
-
-import { Text, StyleSheet, View, ActivityIndicator, TouchableOpacity, TextInput, Alert } from "react-native";
+import { 
+  Text, 
+  StyleSheet, 
+  View, 
+  ActivityIndicator, 
+  TouchableOpacity, 
+  TextInput, 
+  Alert,
+  RefreshControl,
+  ScrollView 
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useState, useEffect, useCallback } from "react";
@@ -12,12 +21,18 @@ import useApi from "@/utils/useApi";
 import Configuration from "@/config/constants";
 import { Place } from "@/types/place";
 
+// Constante para límite de establecimientos por página
+const PLACES_PER_PAGE = 3;
+
 export default function() {
     const [loading, setLoading] = useState<boolean>(true);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
     const [places, setPlaces] = useState<Place[]>([]);
     const [searchBox, setSearchBox] = useState<string>("");
     const [filteredPlaces, setFilteredPlaces] = useState<Place[]>([]);
     const [hasLoaded, setHasLoaded] = useState(false);
+    const [displayedPlacesCount, setDisplayedPlacesCount] = useState<number>(PLACES_PER_PAGE);
+    const [displayedPlaces, setDisplayedPlaces] = useState<Place[]>([]);
 
     const { session } = useAuth();
     const api = useApi();
@@ -49,19 +64,29 @@ export default function() {
                     id: branch.ID_Sucursal,
                     title: branch.Nombre,
                     location: branch.Ubicacion,
-                    price: `L. ${branch.Precio_Parqueo.toFixed(2)}`,
-                    availableSpots: branch.Espacios_Disponibles,
-                    totalSpots: branch.Espacios_Totales,
-                    schedule: `Límite: ${branch.Limite_Hora_Parqueo} horas`,
-                    commerceId: branch.ID_Comercio
+                    price: `L. ${branch.Precio_Parqueo?.toFixed(2) || "0.00"}`,
+                    availableSpots: branch.Espacios_Disponibles || 0,
+                    totalSpots: branch.Espacios_Totales || 0,
+                    schedule: `Límite: ${branch.Limite_Hora_Parqueo || 24} horas`,
+                    commerceId: branch.ID_Comercio,
+                    // Datos adicionales para imágenes
+                    img: branch.Imagen || `https://via.placeholder.com/300x200/cccccc/969696?text=${encodeURIComponent(branch.Nombre.substring(0, 10))}`,
+                    // Calcular ocupación
+                    occupancyRate: branch.Espacios_Totales > 0 
+                        ? Math.round(((branch.Espacios_Totales - (branch.Espacios_Disponibles || 0)) / branch.Espacios_Totales) * 100)
+                        : 0
                 }));
                 
                 setPlaces(apiPlaces);
                 setFilteredPlaces(apiPlaces);
+                // Inicializar con las primeras sucursales
+                setDisplayedPlaces(apiPlaces.slice(0, PLACES_PER_PAGE));
+                setDisplayedPlacesCount(PLACES_PER_PAGE);
             } else {
                 Alert.alert("Información", "No tienes establecimientos registrados");
                 setPlaces([]);
                 setFilteredPlaces([]);
+                setDisplayedPlaces([]);
             }
         } catch (error: any) {
             console.error("Error cargando establecimientos:", error);
@@ -79,11 +104,19 @@ export default function() {
             Alert.alert("Error", errorMessage);
             setPlaces([]);
             setFilteredPlaces([]);
+            setDisplayedPlaces([]);
         } finally {
             setLoading(false);
+            setRefreshing(false);
             setHasLoaded(true);
         }
     }, [session, api]);
+
+    // Función para refrescar
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        loadPlaces();
+    }, [loadPlaces]);
 
     // Cargar lugares al montar el componente
     useEffect(() => {
@@ -109,14 +142,23 @@ export default function() {
     useEffect(() => {
         if (searchBox.trim() === "") {
             setFilteredPlaces(places);
+            setDisplayedPlaces(places.slice(0, displayedPlacesCount));
         } else {
             const filtered = places.filter(place =>
                 place.title.toLowerCase().includes(searchBox.toLowerCase()) ||
                 place.location.toLowerCase().includes(searchBox.toLowerCase())
             );
             setFilteredPlaces(filtered);
+            setDisplayedPlaces(filtered.slice(0, displayedPlacesCount));
         }
-    }, [searchBox, places]);
+    }, [searchBox, places, displayedPlacesCount]);
+
+    // Función para cargar más establecimientos
+    const loadMorePlaces = () => {
+        const newCount = displayedPlacesCount + PLACES_PER_PAGE;
+        setDisplayedPlacesCount(newCount);
+        setDisplayedPlaces(filteredPlaces.slice(0, newCount));
+    };
 
     if (loading && !hasLoaded) {
         return (
@@ -133,6 +175,9 @@ export default function() {
             </View>
         );
     }
+
+    const totalPlaces = filteredPlaces.length;
+    const hasMorePlaces = totalPlaces > displayedPlacesCount;
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -173,15 +218,49 @@ export default function() {
                             {/* Contador de resultados */}
                             <View style={styles.resultsCount}>
                                 <Text style={styles.resultsText}>
-                                    Mostrando {filteredPlaces.length} de {places.length} establecimientos
+                                    Mostrando {Math.min(displayedPlacesCount, totalPlaces)} de {totalPlaces} establecimientos
                                 </Text>
                             </View>
                             
-                            {/* Usar tu PlaceList con onRefresh */}
-                            <PlaceList 
-                                places={ filteredPlaces } 
-                                onRefresh={ loadPlaces }
-                            />
+                            {/* ScrollView con RefreshControl */}
+                            <ScrollView 
+                                style={{ flex: 1 }}
+                                refreshControl={
+                                    <RefreshControl
+                                        refreshing={refreshing}
+                                        onRefresh={onRefresh}
+                                        colors={[Configuration.SPOTTY_PRIMARY_COLOR]}
+                                        tintColor={Configuration.SPOTTY_PRIMARY_COLOR}
+                                    />
+                                }
+                            >
+                                {/* Usar tu PlaceList con los lugares mostrados */}
+                                <PlaceList 
+                                    places={ displayedPlaces } 
+                                    onRefresh={ loadPlaces }
+                                />
+                                
+                                {/* Botón para cargar más establecimientos */}
+                                {hasMorePlaces && (
+                                    <TouchableOpacity
+                                        style={styles.loadMoreButton}
+                                        onPress={loadMorePlaces}
+                                    >
+                                        <Text style={styles.loadMoreText}>
+                                            Cargar más establecimientos ({totalPlaces - displayedPlacesCount} más)
+                                        </Text>
+                                        <Ionicons 
+                                            name="chevron-down" 
+                                            size={20} 
+                                            color={Configuration.SPOTTY_PRIMARY_COLOR} 
+                                            style={{ marginLeft: 8 }}
+                                        />
+                                    </TouchableOpacity>
+                                )}
+                                
+                                {/* Espacio al final para mejor visualización */}
+                                <View style={{ height: 20 }} />
+                            </ScrollView>
                         </>
                     )
             }
@@ -316,11 +395,33 @@ const styles = StyleSheet.create({
     },
     resultsCount: {
         paddingHorizontal: 20,
-        marginBottom: 5,
+        marginBottom: 10,
+        alignItems: "center",
     },
     resultsText: {
         color: "#666",
         fontSize: 14,
         fontStyle: "italic",
+        backgroundColor: "#f0f0f0",
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        borderRadius: 12,
+    },
+    loadMoreButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#f0f0f0",
+        marginHorizontal: 15,
+        marginTop: 15,
+        paddingVertical: 12,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: Configuration.SPOTTY_PRIMARY_COLOR,
+    },
+    loadMoreText: {
+        color: Configuration.SPOTTY_PRIMARY_COLOR,
+        fontWeight: "bold",
+        fontSize: 16,
     },
 });
