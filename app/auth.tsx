@@ -12,7 +12,7 @@ import Logo from "@/assets/images/logo.png";
 
 import Configuration from "@/config/constants";
 
-export default function () {
+export default function Auth() {
 	const [form, setForm] = useState<Form>(Form.REGISTER);
 	const [userType, setUserType] = useState<UserType>(UserType.USER);
 	const [error, setError] = useState("");

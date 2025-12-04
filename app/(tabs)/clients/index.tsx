@@ -66,16 +66,9 @@ export default function Index() {
 			const response = await api.get('/api/branches');
 			setSpots(response.data.data);
 			setLoading(false);
-			console.log(response.data.data)
-			console.log(spots)
-			console.log(loading)
 		}
 		retreiveData();
 		
-		// setTimeout(function() {
-		// 	setSpots( exampleSpots );
-		// 	setLoading(false);
-		// }, 3000);
 	}, []);
 
 	return (

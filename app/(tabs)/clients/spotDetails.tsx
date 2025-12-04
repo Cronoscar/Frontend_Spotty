@@ -10,6 +10,7 @@ import { SpotDetails } from "@/types/spot";
 import Configuration from "@/config/constants";
 
 import SpotImage from "@/assets/images/spot.png";
+import useApi from "@/utils/useApi";
 
 const spotExample: SpotDetails = {
 	id: 1,
@@ -43,18 +44,25 @@ const spotExample: SpotDetails = {
 	]
 };
 
-export default function() {
+export default function Deatils() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [spot, setSpot] = useState<SpotDetails | null>(null);
 	const router = useRouter();
+	const api = useApi();
 
 	const { id } = useLocalSearchParams();
 
 	const spotPercentageUse: number = spot ? (spot.totalSpots - spot.freeSpots) / spot.totalSpots * 100 : 0;
 
 	useEffect(function() {
-		setSpot(spotExample);
+		const retrieveSpotData = async () => {
+			const response = await api.get(`/api/branches/${id}`);
+			setSpot(response.data.data);
+		}
+		retrieveSpotData();
 		setLoading(false);
+		console.log(loading);
+		console.log(spot);
 	}, []);
 
 	return loading

@@ -3,16 +3,19 @@ import { Form, UserType } from "@/config/enums";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 
+import { Picker } from '@react-native-picker/picker';
 
 import { RegisterFormProps } from "@/types/component";
 import useApi from "@/utils/useApi";
 
 import Toast from "react-native-toast-message";
 
+import { router } from "expo-router";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function RegisterForm({ setError, setForm, userType }: RegisterFormProps) {
-const api = useApi();
-const router = useRouter();
+    const api = useApi();
+    const router = useRouter();
 
     // FORM DE USUARIO
     const [uName, setUName] = useState("");
@@ -36,7 +39,6 @@ const router = useRouter();
 async function handleRegister() {
     try {
 
-        // 🌟 FORMULARIO DE USUARIO
         if (userType === UserType.USER) {
 
             const payload = {
@@ -53,17 +55,22 @@ async function handleRegister() {
             };
 
             const response = await api.post("/api/customers", payload);
+            if (response.status === 200 || response.status === 201){
 
-            Toast.show({
-                type: "success",
-                text1: "Usuario registrado",
-                text2: "Tu cuenta ha sido creada",
-            });
+                Toast.show({
+                    type: "success",
+                    text1: "Usuario registrado",
+                    text2: "Tu cuenta ha sido creada",
+                });
+
+                setTimeout(() => {
+                    router.replace("/clients");
+                }, 1200);
+            }
 
             return;
         }
 
-        // 🌟 FORMULARIO DE COMERCIO
         const payload = {
             ceodata: {
                 person: {
@@ -93,7 +100,6 @@ async function handleRegister() {
             text2: "Redirigiendo al panel...",
         });
 
-        // ⏳ pequeña pausa para que el usuario vea el toast
         setTimeout(() => {
             router.replace("/commerce/places");
         }, 1200);
@@ -124,7 +130,17 @@ async function handleRegister() {
                     <TextInput style={styles.input} value={uSurname} onChangeText={setUSurname} />
 
                     <Text style={styles.label}>Género</Text>
-                    <TextInput style={styles.input} value={uGender} onChangeText={setUGender} />
+                    <View style={styles.pickerContainer}>
+                        <Picker
+                            selectedValue={uGender}
+                            onValueChange={(value) => setUGender(value)}
+                            style={styles.picker}
+                        >
+                            <Picker.Item label="Selecciona tu género" value="" />
+                            <Picker.Item label="Masculino" value="Masculino" />
+                            <Picker.Item label="Femenino" value="Femenino" />
+                        </Picker>
+                    </View>
 
                     <Text style={styles.label}>Correo electrónico</Text>
                     <TextInput style={styles.input} value={uEmail} onChangeText={setUEmail} />
@@ -209,6 +225,18 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingHorizontal: 10,
         paddingVertical: 10,
+    },
+    pickerContainer: {
+        borderRadius: 10,
+        borderColor: "lightgray",
+        borderWidth: 1,
+        marginBottom: 10,
+        overflow: 'hidden',
+    },
+    picker: {
+        height: 50,
+        paddingHorizontal: 10,
+        backgroundColor: '#FFFFFF',
     },
     button: {
         borderRadius: 10,

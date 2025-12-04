@@ -96,7 +96,7 @@ export default function() {
 						onChangeText={ setCardOwner }
 						placeholder="Oscar Estrada"
 						keyboardType="default"
-						maxLength={10}
+						maxLength={16}
 					/>
 				</View>
 				<View style={{ borderColor: "lightgray", borderWidth: 1, borderRadius: 10, padding: 15, marginBottom: 20, }}>

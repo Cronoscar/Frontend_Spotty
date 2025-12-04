@@ -12,7 +12,7 @@ export default function ReviewList({ reviews }: ReviewListProps) {
 			<FlatList
 				contentContainerStyle={ styles.content }
 				data={ reviews }
-				keyExtractor={ ( review: Review ) => review.id.toString() }
+				keyExtractor={ ( review: Review ) => review.id }
 				renderItem={({ item }) => (
 					<ReviewItem
 						id={ item.id }

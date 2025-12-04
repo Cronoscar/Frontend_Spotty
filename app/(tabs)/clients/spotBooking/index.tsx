@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState, useEffect } from "react";
@@ -13,16 +14,17 @@ import { Spot } from "@/types/spot";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
 
 import Configuration from "@/config/constants";
+import useApi from "@/utils/useApi";
 
-const exampleSpot: Spot = {
-	id: 1,
-	title: "Metro Mall",
-	location: "Col. Las Brisas",
-	freeSpots: 0,
-	distance: 0,
-	stars: 0,
-	price: 0,
-};
+// const exampleSpot: Spot = {
+// 	id: 1,
+// 	title: "Metro Mall",
+// 	location: "Col. Las Brisas",
+// 	freeSpots: 0,
+// 	distance: 0,
+// 	stars: 0,
+// 	price: 0,
+// };
 
 const N_ROWS = 4;
 const N_COLUMNS = 9;
@@ -37,20 +39,24 @@ const SPOT_ROWS: string[] = [
 export default function() {
 	const [loading, setLoading] = useState(true);
 	const [spot, setSpot] = useState<Spot | null>(null);
+	
 	const router = useRouter();
+	const api = useApi();
 
 	const { id } = useLocalSearchParams();
 
 	const { data, setData } = useSpotBooking();
 
-	useAuthStatus();
+	// useAuthStatus();
 
 	useEffect(function() {
-		setTimeout(function() {
-			setSpot(exampleSpot);
-			setLoading(false);
-		}, 500);
-	}, []);
+		const retrieveSpotData = async () => {
+			const response = await api.get(`/api/branches/${id}`);
+			setSpot(response.data.data);
+		}
+		retrieveSpotData();
+		setLoading(false);
+	}, [id]);
 
 	useEffect(function() {
 		setData({
@@ -58,6 +64,7 @@ export default function() {
 			id: id,
 			title: spot?.title,
 			location: spot?.location,
+			hourlyPrice: spot?.price
 		});
 	}, [spot]);
 

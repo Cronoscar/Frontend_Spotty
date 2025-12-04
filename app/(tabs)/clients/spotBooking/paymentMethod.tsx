@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { ScrollView, TouchableOpacity, StyleSheet, View, Text, Pressable } from "react-native";
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
@@ -23,7 +24,9 @@ export default function() {
 			...data,
 			paymentMethod: paymentMethod ?? undefined,
 		});
+		console.log(data);
 	}, [paymentMethod]);
+
 
 	return (
 		<SafeAreaView style={ styles.safeArea }>
@@ -61,16 +64,16 @@ export default function() {
 				</View>
 				<View style={{ borderColor: "lightgray", borderWidth: 1, borderRadius: 10, padding: 15, }}>
 					<View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10, }}>
-						<Text>Subtotal (2 horas)</Text>
-						<Text>${ data?.subtotal ?? 0 }</Text>
+						<Text>Subtotal ({data?.time} horas)</Text>
+						<Text>L.{ data?.subtotal ?? 0 }</Text>
 					</View>
 					<View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10, }}>
 						<Text>ISV</Text>
-						<Text>${ data?.isv ?? 0 }</Text>
+						<Text>L.{ data?.isv ?? 0 }</Text>
 					</View>
 					<View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10, }}>
 						<Text>Total</Text>
-						<Text>${ data?.total ?? 0 }</Text>
+						<Text>L.{ data?.total ?? 0 }</Text>
 					</View>
 				</View>
 				{

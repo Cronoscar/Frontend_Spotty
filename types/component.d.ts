@@ -30,6 +30,7 @@ export type ReviewItemProps = {
 		title: string;
 		content: string;
 		image: any;
+		date: string;
 };
 
 export type ReviewListProps = {

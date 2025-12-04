@@ -45,7 +45,7 @@ export default function() {
 	const [date, setDate] = useState<string>(data?.date || "");
 	const [startTime, setStartTime] = useState<string>(data?.startTime || "");
 	const [endTime, setEndTime] = useState<string>(data?.endTime || "");
-	const [total, setTotal] = useState<number>(10);
+	const [total, setTotal] = useState<number>(1);
 
 	const router = useRouter();
 
@@ -59,9 +59,9 @@ export default function() {
 			startTime: startTime,
 			endTime: endTime,
 			time: end - start,
-			total: total,
-			isv: total * 0.15,
-			subtotal: total - (total * 0.15),
+			subtotal: data?.hourlyPrice * data?.time,
+			isv: data?.subtotal * 0.15,
+			total: data?.subtotal + data?.isv,
 		});
 	}, [date, startTime, endTime]);
 
@@ -82,7 +82,7 @@ export default function() {
 			>
 				<View style={ styles.container }>
 					<Text style={ styles.title }>Selecciona fecha y hora</Text>
-					<Text style={ styles.subtitle }>Elige el cuanto vas a parquear</Text>
+					<Text style={ styles.subtitle }>Elige cuanto vas a parquear</Text>
 				</View>
 				<View style={ styles.locationContainer }>
 					<Text style={ styles.spotTitle }>{ data?.title }</Text>

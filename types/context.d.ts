@@ -23,6 +23,7 @@ export type SpotBookingData = {
 	cardNumber?: string;
 	expirationDate?: string;
 	CVV?: string;
+	hourlyPrice?: number;
 	cardOwner?: string;
 	session?: Session;
 };

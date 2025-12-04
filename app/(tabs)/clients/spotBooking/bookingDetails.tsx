@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import QRCode from 'react-native-qrcode-svg';
 
 import { useSpotBooking } from "@/contexts/SpotBookingContext";
 
@@ -47,11 +48,18 @@ export default function() {
 				<Text style={{ fontWeight: "bold", fontSize: 30, }}>Reserva Confirmada</Text>
 				<Text style={{ color: "gray", fontWeight: "bold", }}>Su plaza de parqueo está asegurada</Text>
 			</View>
-			<Ionicons
+			{/* <Ionicons
 				style={{ alignSelf: "center", marginVertical: 25, }}
 				name="qr-code-outline"
 				size={ 150 }
-			/>
+			/> */}
+			<View style={{ alignItems: "center", margin: "20px"}}>
+				<QRCode
+					value={JSON.stringify(data)}
+					size={150}
+					logoBackgroundColor='transparent'
+				/>
+			</View>
 			<View
 				style={{
 					borderColor: "lightgray",
@@ -64,7 +72,7 @@ export default function() {
 			>
 				<View style={ styles.infoField }>
 					<Text>ID Reserva</Text>
-					<Text>1111</Text>
+					<Text>{data?.id}</Text>
 				</View>
 				<View style={ styles.infoField }>
 					<Text>Ubicación</Text>
