@@ -8,4 +8,11 @@ export type Place = {
 	totalSpots: number;
 	schedule: string;
 	commerceId?: number; 
+	img: string;
+	occupancyRate?: number;
+	totalReservations?: number;
+    totalRevenue?: number;
+    activeReservations?: number;
+    completedReservations?: number;
+    upcomingReservations?: number;
 };

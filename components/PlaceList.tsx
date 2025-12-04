@@ -1,4 +1,4 @@
-// components/PlaceList.tsx - VERSIÓN ACTUALIZADA
+// components/PlaceList.tsx
 import { View, FlatList, StyleSheet, RefreshControl } from "react-native";
 import PlaceItem from "./PlaceItem";
 import { PlaceListProps } from "@/types/component";
@@ -32,8 +32,9 @@ const PlaceList = ({ places, onRefresh }: PlaceListProps) => {
                         price={item.price}
                         availableSpots={item.availableSpots}
                         totalSpots={item.totalSpots}
-                        // Agregar schedule si lo necesitas
                         schedule={item.schedule || ""}
+                        // Pasar la imagen
+                        img={item.img}
                     />
                 )}
                 refreshControl={
@@ -41,12 +42,11 @@ const PlaceList = ({ places, onRefresh }: PlaceListProps) => {
                         <RefreshControl
                             refreshing={refreshing}
                             onRefresh={handleRefresh}
-                            colors={["#275C9C"]} // Color del spinner (SPOTTY_PRIMARY_COLOR)
+                            colors={["#275C9C"]}
                             tintColor="#275C9C"
                         />
                     ) : undefined
                 }
-                // Agregar algunos props adicionales para mejor UX
                 showsVerticalScrollIndicator={false}
                 initialNumToRender={5}
                 maxToRenderPerBatch={10}
@@ -59,7 +59,7 @@ const PlaceList = ({ places, onRefresh }: PlaceListProps) => {
 const styles = StyleSheet.create({
     content: {
         padding: 10,
-        paddingBottom: 20, // Espacio extra al final
+        paddingBottom: 20,
     }
 });
 

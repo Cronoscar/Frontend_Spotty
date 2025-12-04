@@ -1,10 +1,12 @@
+// components/PlaceStatItem.tsx
 import { Pressable, View, Text, StyleSheet, Image, TouchableOpacity, useWindowDimensions, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 import { PlaceStatItemProps } from "@/types/component";
 
-import PlaceImage from "@/assets/images/commerce.png";
+// Remueve la importación de la imagen local
+// import PlaceImage from "@/assets/images/commerce.png";
 
 export default function PlaceStatItem({
 	id,
@@ -13,16 +15,22 @@ export default function PlaceStatItem({
 	price,
 	availableSpots,
 	totalSpots,
-	schedule
+	schedule,
+	img // Agrega esta prop
 }: PlaceStatItemProps) {
 	const router = useRouter();
+
+	// Generar una URL de placeholder basada en el título
 
 	return (
 		<View style={ styles.place }>
 			<View style={ styles.header }>
 				<Image
-					source={ PlaceImage }
+					source={{ uri: img || placeholderUrl }} // Usar la imagen de la API
 					style={ styles.image }
+					onError={(e) => {
+						console.log("Error cargando imagen para:", title, "URL:", img);
+					}}
 				/>
 				<View style={ styles.placeInfo }>
 					<Text style={ styles.title }>{ title }</Text>
@@ -96,10 +104,12 @@ const styles = StyleSheet.create({
 		maxHeight: 100,
 		maxWidth: "40%",
 		borderRadius: 10,
+		backgroundColor: "#e0e0e0", // Color de fondo mientras carga
 	},
 	placeInfo: {
 		marginHorizontal: 10,
 		gap: 7,
+		flex: 1,
 	},
 	title: {
 		fontWeight: "bold",

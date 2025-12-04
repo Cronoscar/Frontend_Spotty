@@ -60,22 +60,40 @@ export default function() {
             
             if (response.data.success && response.data.data) {
                 // Mapear los datos de la API al formato Place
-                const apiPlaces: Place[] = response.data.data.map((branch: any) => ({
-                    id: branch.ID_Sucursal,
-                    title: branch.Nombre,
-                    location: branch.Ubicacion,
-                    price: `L. ${branch.Precio_Parqueo?.toFixed(2) || "0.00"}`,
-                    availableSpots: branch.Espacios_Disponibles || 0,
-                    totalSpots: branch.Espacios_Totales || 0,
-                    schedule: `Límite: ${branch.Limite_Hora_Parqueo || 24} horas`,
-                    commerceId: branch.ID_Comercio,
-                    // Datos adicionales para imágenes
-                    img: branch.Imagen || `https://via.placeholder.com/300x200/cccccc/969696?text=${encodeURIComponent(branch.Nombre.substring(0, 10))}`,
-                    // Calcular ocupación
-                    occupancyRate: branch.Espacios_Totales > 0 
-                        ? Math.round(((branch.Espacios_Totales - (branch.Espacios_Disponibles || 0)) / branch.Espacios_Totales) * 100)
-                        : 0
-                }));
+               const apiPlaces: Place[] = response.data.data.map((branch: any) => {
+    // Normalizar URL de Imgur
+    let imageUrl = branch.Imagen;
+    
+    // Si es una URL de Imgur básica, convertirla a URL directa
+    if (imageUrl && imageUrl.includes('imgur.com')) {
+        // Extraer el ID de la imagen
+        const parts = imageUrl.split('/');
+        const imageId = parts[parts.length - 1];
+        
+        // Convertir a URL directa de Imgur
+        // https://imgur.com/RD3nLYG -> https://i.imgur.com/RD3nLYG.jpg
+        if (!imageUrl.includes('i.imgur.com')) {
+            imageUrl = `https://i.imgur.com/${imageId}.jpg`;
+        }
+    }
+    
+    return {
+        id: branch.ID_Sucursal,
+        title: branch.Nombre,
+        location: branch.Ubicacion,
+        price: `L. ${branch.Precio_Parqueo?.toFixed(2) || "0.00"}`,
+        availableSpots: branch.Espacios_Disponibles || 0,
+        totalSpots: branch.Espacios_Totales || 0,
+        schedule: `Límite: ${branch.Limite_Hora_Parqueo || 24} horas`,
+        commerceId: branch.ID_Comercio,
+        // Usar la imagen normalizada
+        img: imageUrl,
+        // Calcular ocupación
+        occupancyRate: branch.Espacios_Totales > 0 
+            ? Math.round(((branch.Espacios_Totales - (branch.Espacios_Disponibles || 0)) / branch.Espacios_Totales) * 100)
+            : 0
+    };
+});
                 
                 setPlaces(apiPlaces);
                 setFilteredPlaces(apiPlaces);

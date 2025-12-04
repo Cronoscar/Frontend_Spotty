@@ -110,16 +110,17 @@ export type PlaceListProps = {
 };
 
 
-export type PlaceItemProps = {
+// types/component.ts
+export interface PlaceItemProps {
     id: number;
     title: string;
     location: string;
     price: string;
     availableSpots: number;
     totalSpots: number;
-    schedule?: string; // Agregar schedule opcional
-    commerceId?: number; // Agregar commerceId opcional
-};
+    schedule: string;
+    img?: string;  // Agrega esta línea
+}
 
 export type RowConfigurationProps = {
 	rowIndex: number;
@@ -129,12 +130,19 @@ export type RowConfigurationProps = {
 
 export type PlaceStatItemProps = {
 	id: number;
-	title: string;
-	location: string;
-	price: string;
-	availableSpots: number;
-	totalSpots: number;
-	schedule: string;
+    title: string;
+    location: string;
+    price: string;
+    availableSpots: number;
+    totalSpots: number;
+    schedule?: string;
+    img?: string;
+    occupancyRate?: number;
+    totalReservations?: number;
+    totalRevenue?: number;
+    activeReservations?: number;
+    completedReservations?: number;
+    upcomingReservations?: number;
 };
 
 export type PlaceStatListProps = PlaceListProps;
