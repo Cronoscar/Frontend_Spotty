@@ -8,18 +8,23 @@ import {
   TextInput, 
   ActivityIndicator,
   Alert,
-  RefreshControl 
+  RefreshControl,
+  Modal,
+  Dimensions,
+  StatusBar,
+  Platform
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState, useCallback } from "react";
-import { useFocusEffect, useRouter } from "expo-router";
+import { useFocusEffect } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import Collapsible from 'react-native-collapsible';
-
 import { BookingCommerce, ReservationDetail } from "@/types/booking";
 import Configuration from "@/config/constants";
 import { useAuth } from "@/contexts/AuthContext";
 import useApi from "@/utils/useApi";
+import * as ImagePicker from 'expo-image-picker';
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 
 // Tipos extendidos para incluir detalles de reservas
 interface BranchWithReservations extends BookingCommerce {
@@ -56,6 +61,7 @@ interface ApiReservation {
 // Constantes para límites de paginación
 const BRANCHES_PER_PAGE = 3;
 const RESERVATIONS_PER_PAGE = 3;
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 // Función para extraer solo la hora de un string ISO
 const extractTimeOnly = (isoString: string): string => {
@@ -89,10 +95,18 @@ export default function() {
   const [filteredBranches, setFilteredBranches] = useState<BranchWithReservations[]>([]);
   const [displayedBranchesCount, setDisplayedBranchesCount] = useState<number>(BRANCHES_PER_PAGE);
   const [displayedBranches, setDisplayedBranches] = useState<BranchWithReservations[]>([]);
+  
+  // Estados para el modal de escaneo
+  const [scanModalVisible, setScanModalVisible] = useState<boolean>(false);
+  const [scanType, setScanType] = useState<'entrada' | 'salida' | null>(null);
+  const [scanResult, setScanResult] = useState<string>('');
+  const [scanning, setScanning] = useState<boolean>(false);
+  const [manualCode, setManualCode] = useState<string>('');
+  const [permission, requestPermission] = useCameraPermissions();
+  const [facing, setFacing] = useState<CameraType>('back');
 
   const { session } = useAuth();
   const api = useApi();
-  const router = useRouter();
 
   // Función para cargar sucursales y reservas
   const loadBranchesWithReservations = useCallback(async () => {
@@ -152,7 +166,7 @@ export default function() {
             nBookings: activeReservationsForBranch.length,
             availableSpots: availableSpots,
             totalSpots: totalSpots,
-            img: branch.Imagen || `https://via.placeholder.com/300x200/cccccc/969696?text=${encodeURIComponent(branch.Nombre.substring(0, 10))}`,
+            img: `https://d1qe01kdo9e97u.cloudfront.net/assets/images/home-slide/tegucigalpa/9i97bjODRIrLoTGACnOhOZRUaMm1egSw7bns92r5.webp`,
             occupancyRate,
             showAllReservations: false,
             reservations: activeReservationsForBranch.map((reservation: ApiReservation) => ({
@@ -288,8 +302,118 @@ export default function() {
     setDisplayedBranches(filteredBranches.slice(0, newCount));
   };
 
+  // Función para abrir el modal de escaneo
   const handleScan = (type: 'entrada' | 'salida') => {
-    router.push(`/commerce/scan?type=${type}`);
+    setScanType(type);
+    setScanModalVisible(true);
+    setScanResult('');
+    setManualCode('');
+    setScanning(false);
+  };
+
+  // Función para cerrar el modal
+  const closeScanModal = () => {
+    setScanModalVisible(false);
+    setScanType(null);
+    setScanResult('');
+    setManualCode('');
+    setScanning(false);
+  };
+
+  // Función para procesar el escaneo de QR
+  const handleBarCodeScanned = ({ data }: { data: string }) => {
+    setScanning(true);
+    setScanResult(data);
+    
+    // Aquí puedes procesar el código QR escaneado
+    // Por ejemplo, enviarlo a tu API para registrar entrada/salida
+    Alert.alert(
+      "Código QR Escaneado",
+      `Código: ${data}\n\n¿Deseas registrar ${scanType === 'entrada' ? 'entrada' : 'salida'}?`,
+      [
+        { text: "Cancelar", style: "cancel", onPress: () => setScanning(false) },
+        { 
+          text: "Confirmar", 
+          style: "default",
+          onPress: async () => {
+            try {
+              // Aquí llamarías a tu API para registrar la entrada/salida
+              // Ejemplo:
+              // const response = await api.post(`/api/registrar-${scanType}`, { codigo: data });
+              
+              Alert.alert(
+                "Éxito", 
+                `${scanType === 'entrada' ? 'Entrada' : 'Salida'} registrada exitosamente`,
+                [{ text: "OK", onPress: closeScanModal }]
+              );
+            } catch (error) {
+              Alert.alert("Error", "No se pudo registrar la operación");
+              setScanning(false);
+            }
+          }
+        }
+      ]
+    );
+  };
+
+  // Función para procesar código manual
+  const handleManualSubmit = () => {
+    if (!manualCode.trim()) {
+      Alert.alert("Error", "Por favor ingresa un código");
+      return;
+    }
+    
+    setScanResult(manualCode);
+    Alert.alert(
+      "Código Ingresado",
+      `Código: ${manualCode}\n\n¿Deseas registrar ${scanType === 'entrada' ? 'entrada' : 'salida'}?`,
+      [
+        { text: "Cancelar", style: "cancel" },
+        { 
+          text: "Confirmar", 
+          style: "default",
+          onPress: async () => {
+            try {
+              // Aquí llamarías a tu API para registrar la entrada/salida
+              // Ejemplo:
+              // const response = await api.post(`/api/registrar-${scanType}`, { codigo: manualCode });
+              
+              Alert.alert(
+                "Éxito", 
+                `${scanType === 'entrada' ? 'Entrada' : 'Salida'} registrada exitosamente`,
+                [{ text: "OK", onPress: closeScanModal }]
+              );
+            } catch (error) {
+              Alert.alert("Error", "No se pudo registrar la operación");
+            }
+          }
+        }
+      ]
+    );
+  };
+
+  // Función para alternar entre cámara frontal y trasera
+  const toggleCameraFacing = () => {
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
+  };
+
+  // Función para seleccionar imagen de galería
+  const pickImage = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        quality: 1,
+      });
+
+      if (!result.canceled && result.assets[0].uri) {
+        // Aquí procesarías la imagen para extraer el código QR
+        // Por ahora solo mostramos un mensaje
+        Alert.alert("Imagen seleccionada", "La funcionalidad de extraer QR de imágenes está en desarrollo.");
+      }
+    } catch (error) {
+      Alert.alert("Error", "No se pudo abrir la galería");
+    }
   };
 
   const getStatusBadgeStyle = (status: string) => {
@@ -328,7 +452,7 @@ export default function() {
   const BranchImage = ({ uri, branchId }: { uri: string; branchId: number }) => {
     const [imageError, setImageError] = useState(false);
     
-    if (imageError || !uri || !uri.startsWith('http')) {
+    if (imageError || !uri || typeof uri !== 'string' || !uri.startsWith('http')) {
       return (
         <View style={[styles.branchImage, styles.branchImagePlaceholder]}>
           <Ionicons name="business-outline" size={30} color="#ccc" />
@@ -639,6 +763,143 @@ export default function() {
           </>
         )}
       </ScrollView>
+
+      {/* Modal de escaneo QR - FULL SCREEN */}
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={scanModalVisible}
+        onRequestClose={closeScanModal}
+        statusBarTranslucent={true}
+      >
+        <View style={styles.modalFullScreen}>
+          {/* Header del modal */}
+          <SafeAreaView style={styles.modalHeaderContainer}>
+            <View style={styles.modalHeader}>
+              <View style={styles.modalHeaderLeft}>
+                <TouchableOpacity onPress={closeScanModal} style={styles.backButton}>
+                  <Ionicons name="arrow-back" size={24} color="#fff" />
+                </TouchableOpacity>
+                <View style={styles.modalTitleContainer}>
+                  <Ionicons 
+                    name={scanType === 'entrada' ? "log-in-outline" : "log-out-outline"} 
+                    size={20} 
+                    color="#fff" 
+                  />
+                  <Text style={styles.modalTitle}>
+                    {scanType === 'entrada' ? 'Escanear Entrada' : 'Escanear Salida'}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </SafeAreaView>
+
+          {/* Contenido del modal */}
+          <View style={styles.modalBody}>
+            {permission === null ? (
+              <View style={styles.permissionContainer}>
+                <ActivityIndicator size="large" color={Configuration.SPOTTY_PRIMARY_COLOR} />
+                <Text style={styles.permissionText}>Solicitando permiso para la cámara...</Text>
+              </View>
+            ) : permission === false ? (
+              <View style={styles.permissionContainer}>
+                <Ionicons name="camera-off-outline" size={60} color="#ff6b6b" />
+                <Text style={styles.permissionText}>No tenemos permiso para acceder a la cámara</Text>
+                <TouchableOpacity 
+                  style={styles.permissionButton}
+                  onPress={requestPermission}
+                >
+                  <Text style={styles.permissionButtonText}>Conceder Permiso</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <>
+                {/* Vista de la cámara - Ocupa la mayor parte de la pantalla */}
+                <View style={styles.cameraFullScreenContainer}>
+                  <CameraView
+                    style={styles.cameraFullScreen}
+                    facing={facing}
+                    onBarcodeScanned={scanning ? undefined : handleBarCodeScanned}
+                    barcodeScannerSettings={{
+                      barcodeTypes: ['qr', 'pdf417', 'code128'],
+                    }}
+                  />
+                  
+                  {/* Marco de escaneo */}
+                  <View style={styles.scanFrame}>
+                    <View style={styles.scanFrameCornerTopLeft} />
+                    <View style={styles.scanFrameCornerTopRight} />
+                    <View style={styles.scanFrameCornerBottomLeft} />
+                    <View style={styles.scanFrameCornerBottomRight} />
+                  </View>
+                  
+                  {/* Instrucciones superiores */}
+                  <View style={styles.topInstructions}>
+                    <Text style={styles.instructionsText}>
+                      Coloca el código QR dentro del marco
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Controles en la parte inferior */}
+                <View style={styles.bottomControls}>
+                  {/* Entrada manual */}
+                  <View style={styles.manualInputContainer}>
+                    <Text style={styles.manualInputLabel}>O ingresa el código manualmente:</Text>
+                    <View style={styles.manualInputRow}>
+                      <TextInput
+                        style={styles.manualInput}
+                        placeholder="Ej: RESERVA-12345"
+                        value={manualCode}
+                        onChangeText={setManualCode}
+                        autoCapitalize="characters"
+                        onSubmitEditing={handleManualSubmit}
+                      />
+                      <TouchableOpacity 
+                        style={[
+                          styles.manualSubmitButton,
+                          !manualCode.trim() && styles.manualSubmitButtonDisabled
+                        ]}
+                        onPress={handleManualSubmit}
+                        disabled={!manualCode.trim()}
+                      >
+                        <Text style={styles.manualSubmitButtonText}>Enviar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+
+                  {/* Controles de cámara */}
+                  <View style={styles.cameraControlsRow}>
+                    <TouchableOpacity 
+                      style={styles.cameraControlButton}
+                      onPress={pickImage}
+                    >
+                      <Ionicons name="image-outline" size={24} color="#fff" />
+                      <Text style={styles.cameraControlText}>Galería</Text>
+                    </TouchableOpacity>
+                    
+                    <TouchableOpacity 
+                      style={styles.cameraControlButton}
+                      onPress={toggleCameraFacing}
+                    >
+                      <Ionicons name="camera-reverse-outline" size={24} color="#fff" />
+                      <Text style={styles.cameraControlText}>Voltear</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  {/* Resultado del escaneo */}
+                  {scanResult && (
+                    <View style={styles.resultContainer}>
+                      <Text style={styles.resultLabel}>Código escaneado:</Text>
+                      <Text style={styles.resultText}>{scanResult}</Text>
+                    </View>
+                  )}
+                </View>
+              </>
+            )}
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -974,5 +1235,239 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#999",
     textAlign: "center",
+  },
+
+  // Estilos para el modal de escaneo - MODAL FULL SCREEN
+  modalFullScreen: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
+  modalHeaderContainer: {
+    backgroundColor: '#000',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    backgroundColor: '#000',
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+  },
+  modalHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  backButton: {
+    padding: 8,
+    marginRight: 10,
+  },
+  modalTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  modalBody: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
+  
+  // Estilos para permisos de cámara
+  permissionContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#000',
+  },
+  permissionText: {
+    fontSize: 16,
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  permissionButton: {
+    backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
+    paddingHorizontal: 25,
+    paddingVertical: 15,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  permissionButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  
+  // Estilos para la cámara en pantalla completa
+  cameraFullScreenContainer: {
+    flex: 1,
+    position: 'relative',
+  },
+  cameraFullScreen: {
+    flex: 1,
+  },
+  
+  // Estilos para el marco de escaneo
+  scanFrame: {
+    position: 'absolute',
+    top: '20%',
+    left: '15%',
+    width: '70%',
+    height: '35%',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.5)',
+  },
+  scanFrameCornerTopLeft: {
+    position: 'absolute',
+    top: -2,
+    left: -2,
+    width: 25,
+    height: 25,
+    borderTopWidth: 4,
+    borderLeftWidth: 4,
+    borderColor: Configuration.SPOTTY_PRIMARY_COLOR,
+  },
+  scanFrameCornerTopRight: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    width: 25,
+    height: 25,
+    borderTopWidth: 4,
+    borderRightWidth: 4,
+    borderColor: Configuration.SPOTTY_PRIMARY_COLOR,
+  },
+  scanFrameCornerBottomLeft: {
+    position: 'absolute',
+    bottom: -2,
+    left: -2,
+    width: 25,
+    height: 25,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderColor: Configuration.SPOTTY_PRIMARY_COLOR,
+  },
+  scanFrameCornerBottomRight: {
+    position: 'absolute',
+    bottom: -2,
+    right: -2,
+    width: 25,
+    height: 25,
+    borderBottomWidth: 4,
+    borderRightWidth: 4,
+    borderColor: Configuration.SPOTTY_PRIMARY_COLOR,
+  },
+  
+  // Instrucciones superiores
+  topInstructions: {
+    position: 'absolute',
+    top: '10%',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  instructionsText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '500',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  
+  // Controles inferiores
+  bottomControls: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    padding: 15,
+    paddingBottom: Platform.OS === 'ios' ? 30 : 15,
+  },
+  
+  // Entrada manual
+  manualInputContainer: {
+    marginBottom: 15,
+  },
+  manualInputLabel: {
+    fontSize: 14,
+    color: '#fff',
+    marginBottom: 10,
+  },
+  manualInputRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  manualInput: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    fontSize: 16,
+    color: '#000',
+  },
+  manualSubmitButton: {
+    backgroundColor: Configuration.SPOTTY_PRIMARY_COLOR,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: 80,
+  },
+  manualSubmitButtonDisabled: {
+    backgroundColor: '#666',
+  },
+  manualSubmitButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  
+  // Controles de cámara en fila
+  cameraControlsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 15,
+  },
+  cameraControlButton: {
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    minWidth: 100,
+  },
+  cameraControlText: {
+    color: '#fff',
+    fontSize: 12,
+    marginTop: 5,
+  },
+  
+  // Resultado del escaneo
+  resultContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  resultLabel: {
+    fontSize: 14,
+    color: '#ccc',
+    marginBottom: 5,
+  },
+  resultText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: Configuration.SPOTTY_PRIMARY_COLOR,
   },
 });
