@@ -26,7 +26,7 @@ export default function PlaceStatItem({
 		<View style={ styles.place }>
 			<View style={ styles.header }>
 				<Image
-					source={{ uri: img || placeholderUrl }} // Usar la imagen de la API
+					source={{ uri: img }} // Usar la imagen de la API
 					style={ styles.image }
 					onError={(e) => {
 						console.log("Error cargando imagen para:", title, "URL:", img);
